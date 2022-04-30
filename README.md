@@ -9,4 +9,27 @@ PXX background management system
 
 ```
 building...
+src
+  ├─main
+  │  ├─java
+  │  │  └─com
+  │  │      └─chaffee
+  │  │          ├─config
+  │  │          ├─entity
+  │  │          │  ├─dto
+  │  │          │  ├─pojo
+  │  │          │  └─vo
+  │  │          ├─handler
+  │  │          ├─mapper
+  │  │          └─service
+  │  │              └─impl
+  │  └─resources
+  │      ├─mapper
+  │      ├─static
+  │      └─templates
+  └─test
+      └─java
+          └─com
+              └─chaffee
+
 ```
