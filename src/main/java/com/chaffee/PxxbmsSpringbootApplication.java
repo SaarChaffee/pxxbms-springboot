@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.chaffee")
+@MapperScan( "com.chaffee.mapper" )
 public class PxxbmsSpringbootApplication {
   
   public static void main( String[] args ) {
