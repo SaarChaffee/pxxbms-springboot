@@ -3,6 +3,7 @@ server :
   servlet :
     context-path : /pxxbms
 
+
 spring :
   datasource :
     type : com.alibaba.druid.pool.DruidDataSource
@@ -54,3 +55,11 @@ spring :
         url-pattern : /*
         # 忽略过滤格式
         exclusions : "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+  thymeleaf :
+    cache : false
+  messages :
+    basename : i18n.login
+    encoding : UTF-8
+  mvc :
+    format :
+      date : yyyy-MM-dd
