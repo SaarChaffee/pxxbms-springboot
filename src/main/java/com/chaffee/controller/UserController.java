@@ -24,11 +24,12 @@ public class UserController {
   UserService userService;
   
   @RequestMapping( "/login" )
-  public String login( @RequestParam String username, @RequestParam( "userpasswd" ) String password, @RequestParam(
-      value = "remember-me", required = false ) Boolean remember, Model model,
+  public String login( @RequestParam String username,
+                       @RequestParam( "userpasswd" ) String password,
+                       @RequestParam( value = "remember-me", required = false ) Boolean remember,
+                       Model model,
                        HttpSession session ) {
     LoginDTO login = userService.queryLogin( username, password );
-    System.out.println( remember );
     if( login != null ){
       session.setAttribute( Constants.USER_SESSION, login );
       return "redirect:/main.html";
