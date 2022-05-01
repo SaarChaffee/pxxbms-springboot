@@ -14,7 +14,7 @@ import org.apache.ibatis.annotations.Param;
 */
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
-  public LoginDTO queryLogin(@Param( "userCode" ) String userCode );
+  LoginDTO queryLogin(@Param( "userCode" ) String userCode );
 }
 
 
