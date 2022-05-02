@@ -36,7 +36,7 @@
     where u.userCode = #{userCode};
   </select>
   <select id="queryUserList" resultType="com.chaffee.entity.vo.UserVO">
-    select u.*
+    select u.*,ur.roleName as userRoleName
     from user u,user_role ur
     <where>
       u.userRole = ur.id
