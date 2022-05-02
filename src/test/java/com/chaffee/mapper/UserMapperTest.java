@@ -24,7 +24,7 @@ class UserMapperTest {
   
   @Test
   public void queryUserList() {
-    Page<UserVO> page = new Page<>( 2, 4 );
+    Page<UserVO> page = new Page<>( 0, 4 );
     userMapper.queryUserList( page, "", 0 ).forEach( System.out::println );
   }
 }
