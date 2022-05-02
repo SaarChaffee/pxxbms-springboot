@@ -35,4 +35,17 @@
     from user u
     where u.userCode = #{userCode};
   </select>
+  <select id="queryUserList" resultType="com.chaffee.entity.vo.UserVO">
+    select u.*
+    from user u,user_role ur
+    <where>
+      u.userRole = ur.id
+      <if test="!userName.isEmpty()">
+        and u.userName like CONCAT('%',#{userName},'%')
+      </if>
+      <if test="userRole>0">
+        and u.userRole = #{userRole}
+      </if>
+    </where>
+  </select>
 </mapper>

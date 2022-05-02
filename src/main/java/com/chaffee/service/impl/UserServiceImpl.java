@@ -1,12 +1,16 @@
 package com.chaffee.service.impl;
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chaffee.entity.dto.LoginDTO;
 import com.chaffee.entity.pojo.User;
-import com.chaffee.service.UserService;
+import com.chaffee.entity.vo.UserVO;
 import com.chaffee.mapper.UserMapper;
+import com.chaffee.service.UserService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author RGB
@@ -27,6 +31,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
       }
     }
     return null;
+  }
+  
+  @Override
+  public List<UserVO> queryUserList( IPage<UserVO> page, String userName, int userRole ) {
+    return baseMapper.queryUserList( page, userName, userRole );
   }
 }
 
