@@ -62,7 +62,8 @@ spring :
   mvc :
     format :
       date : yyyy-MM-dd
-
+    pathmatch :
+      matching-strategy : ant_path_matcher
 mybatis-plus :
   configuration :
     log-impl : org.apache.ibatis.logging.slf4j.Slf4jImpl
@@ -74,5 +75,6 @@ logging :
         mybatisplus : DEBUG
       chaffee :
         mapper : DEBUG
-      
 
+swagger2 :
+  enable : true
