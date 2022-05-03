@@ -22,6 +22,8 @@ public interface UserMapper extends BaseMapper<User> {
   
   List<UserVO> queryUserList( @Param( "page" ) IPage<UserVO> page, @Param( "userName" ) String userName, @Param(
       "userRole" ) int userRole );
+  
+  UserVO queryUser(@Param( "id" )long id);
 }
 
 

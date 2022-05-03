@@ -48,4 +48,12 @@
       </if>
     </where>
   </select>
+  <select id="queryUser" resultType="com.chaffee.entity.vo.UserVO">
+    select *
+    from user u,user_role ur
+    <where>
+      u.userRole = ur.id
+      and u.id = #{id}
+    </where>
+  </select>
 </mapper>

@@ -9,6 +9,7 @@ package com.chaffee.controller;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chaffee.entity.dto.LoginDTO;
+import com.chaffee.entity.pojo.User;
 import com.chaffee.entity.pojo.UserRole;
 import com.chaffee.entity.vo.UserVO;
 import com.chaffee.service.UserRoleService;
@@ -17,8 +18,7 @@ import com.chaffee.util.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -31,8 +31,8 @@ public class UserController {
   @Autowired
   UserRoleService userRoleService;
   
-  @RequestMapping( "/login" )
-  public String login( @RequestParam String username,
+  @PostMapping( "/login" )
+  public String login( @RequestParam( "username" ) String username,
                        @RequestParam( "userpasswd" ) String password,
                        @RequestParam( value = "remember-me", required = false ) Boolean remember,
                        Model model,
@@ -48,13 +48,13 @@ public class UserController {
     }
   }
   
-  @RequestMapping( "/logout" )
+  @GetMapping( "/logout" )
   public String logout( HttpSession session ) {
     session.invalidate();
     return "redirect:/index.html";
   }
   
-  @RequestMapping( "/list" )
+  @GetMapping( "/list" )
   public String list( @RequestParam( value = "queryUserName", required = false ) String userName,
                       @RequestParam( value = "queryUserRole", required = false ) String role,
                       @RequestParam( value = "pageIndex", required = false ) String pageIndex,
@@ -65,14 +65,36 @@ public class UserController {
     
     Page<UserVO> page = new Page<>( index, 15 );
     List<UserVO> userList = userService.queryUserList( page, userName, userRole );
-    System.out.println(page.getPages());
     List<UserRole> roleList = userRoleService.list();
     model.addAttribute( "users", userList );
     model.addAttribute( "pageParam", page );
     model.addAttribute( "roleList", roleList );
     model.addAttribute( "queryUserName", userName );
     model.addAttribute( "queryUserRole", userRole );
-    model.addAttribute( "pageIndex", index );
     return "user/list";
+  }
+  
+  @GetMapping( "/list/{id}" )
+  public String list( @PathVariable( "id" ) String userId, Model model ) {
+    long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
+    UserVO userVO = userService.queryUser( id );
+    model.addAttribute( "user", userVO );
+    return "user/view";
+  }
+  
+  @GetMapping( "/toUpd/{id}" )
+  public String toUpd( @PathVariable( "id" ) String userId, Model model ) {
+    long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
+    User user = userService.getById( id );
+    List<UserRole> roleList = userRoleService.list();
+    model.addAttribute( "user", user );
+    model.addAttribute( "roleList", roleList );
+    return "user/update";
+  }
+  
+  @PostMapping("/upd")
+  public String upd(User user){
+    boolean b = userService.updateById( user );
+    return "redirect:/user/list";
   }
 }
