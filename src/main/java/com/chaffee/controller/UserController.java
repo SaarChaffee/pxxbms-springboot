@@ -114,11 +114,18 @@ public class UserController {
   
   @GetMapping( "/exist" )
   @ResponseBody
-  private R exist( @RequestParam String userCode ) {
+  public R exist( @RequestParam String userCode ) {
     UserCodeDTO user = userService.queryUserByCode( userCode );
     if( user != null ){
       return R.ok();
     }
     else return R.error();
+  }
+  
+  @GetMapping( "/delUser/{id}" )
+  public String del( @PathVariable( "id" ) String userId ) {
+    long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
+    boolean b = userService.removeById( id );
+    return "redirect:/user/list";
   }
 }
