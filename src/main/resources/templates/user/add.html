@@ -26,13 +26,13 @@
     <div th:replace="~{commons/commons::sidebar(active='user')}"></div>
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-      <form class="form-control" th:action="@{/user/add}" method="post">
+      <form id="userForm" class="form-control" th:action="@{/user/add}" method="post">
 
         <div class="form-group">
           <label>用户账号：</label>
           <input type="text" status="" name="userCode" class="form-control" id="userCode" value="">
-          <span class="alert sr-only" role="alert">
-          </span>
+          <div class="alert sr-only" role="alert">
+          </div>
         </div>
 
         <div class="form-group">
@@ -98,7 +98,8 @@
                     th:value="${role.getId()}"></option>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary">添加</button>
+        <button type="button" id="userBtn" class="btn btn-primary">添加</button>
+        <button class="btn btn-primary" type="button" th:onclick="|history.back(-1)|">返回</button>
       </form>
     </main>
   </div>

@@ -9,10 +9,13 @@ data_picker.datetimepicker({
   startDate: new Date(new Date().getFullYear() - 100, new Date().getMonth(), new Date().getDate()).toLocaleDateString(),
   endDate: new Date().toLocaleDateString(),
 })
+
 $(() => {
   let userCode = $('#userCode')
   let passWord = $('#passWord')
   let resurePassword = $('#resurePassword')
+  let userBtn = $('#userBtn')
+  let userForm = $('#userForm')
   userCode.bind("blur", () => {
     if (userCode.val() != null && userCode.val() !== "") {
       //ajax后台验证--userCode是否已存在
@@ -25,9 +28,11 @@ $(() => {
           if (data.success === true) {//账号已存在，错误提示
             userCode.next().attr('class', 'alert alert-danger form-control')
             userCode.next().text("账号已存在")
+            userCode.attr('status', 'false')
           } else {//账号可用，正确提示
             userCode.next().attr('class', 'alert alert-success form-control')
             userCode.next().text("账号可用")
+            userCode.attr('status', 'true')
           }
         },
         error: function (data) {//当访问时候，404，500 等非200的错误状态码
@@ -48,9 +53,11 @@ $(() => {
         if (passWord.val() != null && passWord.val() !== "" && passWord.val().length >= 3
             && passWord.val().length <= 20) {
           passWord.next().attr('class', 'sr-only')
+          passWord.attr('status', 'true')
         } else {
           passWord.next().attr('class', 'alert alert-danger form-control')
           passWord.next().text('密码输入不符合规范，请重新输入')
+          passWord.attr('status', 'false')
         }
       })
   
@@ -62,14 +69,30 @@ $(() => {
       .bind("blur", () => {
         if (resurePassword.val() != null && resurePassword.val() !== "" && resurePassword.val().length >= 3
             && resurePassword.val().length <= 20 && passWord.val() === resurePassword.val()) {
-          resurePassword.next().attr('class', 'sr-only')
+          resurePassword.next().attr('class', 'alert alert-success form-control')
+          resurePassword.next().text("密码正确")
+          resurePassword.attr('status', 'true')
         } else {
           if (resurePassword.val() == null || resurePassword.val() == "") {
             resurePassword.next().attr('class', 'sr-only')
           } else {
             resurePassword.next().attr('class', 'alert alert-danger form-control')
             resurePassword.next().text('两次密码输入不正确，请重新输入')
+            resurePassword.attr('status', 'false')
           }
         }
       })
+  
+  userBtn
+      .bind("click", () => {
+        if (userCode.attr('status') === 'true' &&
+            passWord.attr('status') === 'true' &&
+            resurePassword.attr('status') === 'true') {
+          if (confirm("是否确认提交数据")) {
+            userForm.submit()
+          }
+        }
+      })
+  
+
 })
