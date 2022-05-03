@@ -4,6 +4,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chaffee.entity.dto.LoginDTO;
+import com.chaffee.entity.dto.UserCodeDTO;
 import com.chaffee.entity.pojo.User;
 import com.chaffee.entity.vo.UserVO;
 import com.chaffee.mapper.UserMapper;
@@ -41,6 +42,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
   @Override
   public UserVO queryUser( Long id ) {
     return baseMapper.queryUser( id );
+  }
+  
+  @Override
+  public UserCodeDTO queryUserByCode( String userCode ) {
+    return baseMapper.queryUserByCode( userCode );
   }
 }
 

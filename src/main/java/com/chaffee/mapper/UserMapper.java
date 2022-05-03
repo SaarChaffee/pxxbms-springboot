@@ -3,6 +3,7 @@ package com.chaffee.mapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.chaffee.entity.dto.LoginDTO;
+import com.chaffee.entity.dto.UserCodeDTO;
 import com.chaffee.entity.pojo.User;
 import com.chaffee.entity.vo.UserVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -24,6 +25,8 @@ public interface UserMapper extends BaseMapper<User> {
       "userRole" ) int userRole );
   
   UserVO queryUser(@Param( "id" )long id);
+  
+  UserCodeDTO queryUserByCode(@Param( "userCode" )String userCode);
 }
 
 

@@ -3,6 +3,7 @@ package com.chaffee.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.chaffee.entity.dto.LoginDTO;
+import com.chaffee.entity.dto.UserCodeDTO;
 import com.chaffee.entity.pojo.User;
 import com.chaffee.entity.vo.UserVO;
 
@@ -20,4 +21,6 @@ public interface UserService extends IService<User> {
   List<UserVO> queryUserList( IPage<UserVO> page, String userName, int userRole );
   
   UserVO queryUser( Long id );
+  
+  UserCodeDTO queryUserByCode( String userCode );
 }

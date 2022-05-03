@@ -56,4 +56,9 @@
       and u.id = #{id}
     </where>
   </select>
+  <select id="queryUserByCode" resultType="com.chaffee.entity.dto.UserCodeDTO">
+    select *
+    from user
+    where userCode = #{userCode};
+  </select>
 </mapper>

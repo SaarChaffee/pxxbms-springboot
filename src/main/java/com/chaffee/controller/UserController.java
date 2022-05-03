@@ -9,12 +9,14 @@ package com.chaffee.controller;
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chaffee.entity.dto.LoginDTO;
+import com.chaffee.entity.dto.UserCodeDTO;
 import com.chaffee.entity.pojo.User;
 import com.chaffee.entity.pojo.UserRole;
 import com.chaffee.entity.vo.UserVO;
 import com.chaffee.service.UserRoleService;
 import com.chaffee.service.UserService;
 import com.chaffee.util.Constants;
+import com.chaffee.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -92,9 +94,31 @@ public class UserController {
     return "user/update";
   }
   
-  @PostMapping("/upd")
-  public String upd(User user){
+  @PostMapping( "/upd" )
+  public String upd( User user ) {
     boolean b = userService.updateById( user );
     return "redirect:/user/list";
+  }
+  
+  @GetMapping( "/toAdd" )
+  public String toAdd( Model model ) {
+    model.addAttribute( "roleList", userRoleService.list() );
+    return "user/add";
+  }
+  
+  @PostMapping( "/add" )
+  public String add( User user ) {
+    boolean b = userService.save( user );
+    return "redirect:/user/list";
+  }
+  
+  @GetMapping( "/exist" )
+  @ResponseBody
+  private R exist( @RequestParam String userCode ) {
+    UserCodeDTO user = userService.queryUserByCode( userCode );
+    if( user != null ){
+      return R.ok();
+    }
+    else return R.error();
   }
 }
