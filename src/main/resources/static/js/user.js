@@ -1,7 +1,5 @@
 let data_picker = $('.data-picker')
-let userCode = $('#userCode')
-let passWord = $('#passWord')
-let resurePassword = $('#resurePassword')
+
 data_picker.datetimepicker({
   language: 'zh-CN',
   format: 'yyyy-mm-dd',
@@ -12,6 +10,9 @@ data_picker.datetimepicker({
   endDate: new Date().toLocaleDateString(),
 })
 $(() => {
+  let userCode = $('#userCode')
+  let passWord = $('#passWord')
+  let resurePassword = $('#resurePassword')
   userCode.bind("blur", () => {
     if (userCode.val() != null && userCode.val() !== "") {
       //ajax后台验证--userCode是否已存在
