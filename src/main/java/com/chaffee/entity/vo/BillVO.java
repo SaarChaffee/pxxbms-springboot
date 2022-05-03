@@ -17,7 +17,7 @@ public class BillVO implements Serializable {
   /**
    * 主键ID
    */
-  private Integer id;
+  private Long id;
   /**
    * 订单号
    */

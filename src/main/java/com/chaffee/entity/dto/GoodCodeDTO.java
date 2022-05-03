@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Data
 public class GoodCodeDTO implements Serializable {
-  private Integer id;
+  private Long id;
   private String goodCode;
   private String goodName;
   private Integer inventory;
