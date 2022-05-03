@@ -33,7 +33,8 @@
   <select id="queryLogin" resultType="com.chaffee.entity.dto.LoginDTO">
     select *
     from user u
-    where u.userCode = #{userCode};
+    where u.userCode = #{userCode}
+      and deleted = 0
   </select>
   <select id="queryUserList" resultType="com.chaffee.entity.vo.UserVO">
     select u.*,ur.roleName as userRoleName
@@ -46,6 +47,7 @@
       <if test="userRole>0">
         and u.userRole = #{userRole}
       </if>
+      and u.deleted = 0
     </where>
   </select>
   <select id="queryUser" resultType="com.chaffee.entity.vo.UserVO">
@@ -54,11 +56,15 @@
     <where>
       u.userRole = ur.id
       and u.id = #{id}
+      and u.deleted = 0
     </where>
   </select>
   <select id="queryUserByCode" resultType="com.chaffee.entity.dto.UserCodeDTO">
     select *
     from user
-    where userCode = #{userCode};
+    <where>
+      userCode = #{userCode}
+      and deleted = 0
+    </where>
   </select>
 </mapper>
