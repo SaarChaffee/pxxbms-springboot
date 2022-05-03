@@ -17,11 +17,10 @@
 	</head>
 
 	<body>
-	<div th:replace="~{commons/commons::topbar}"></div>
+
 
 		<div class="container-fluid">
 			<div class="row">
-				<div th:replace="~{commons/commons::sidebar(active='user')}"></div>
 
 				<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 					<h1>404</h1>
@@ -32,7 +31,8 @@
 		<!-- Bootstrap core JavaScript
     ================================================== -->
 		<!-- Placed at the end of the document so the pages load faster -->
-		<script type="text/javascript" th:src="@{/js/jquery-3.2.1.slim.min.js}" ></script>
+		<script type="text/javascript" th:src="@{/js/jquery-3.6.0.js}"></script>
+
 		<script type="text/javascript" th:src="@{/js/popper.min.js}" ></script>
 		<script type="text/javascript" th:src="@{/js/bootstrap.min.js}" ></script>
 
