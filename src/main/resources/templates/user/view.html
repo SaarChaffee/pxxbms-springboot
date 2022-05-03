@@ -36,8 +36,7 @@
 
         <div class="form-group">
           <label>姓名</label>
-          <input th:value="${user.getUserName()}" readonly type="text" name="userName" class="form-control"
-                 placeholder="姓名">
+          <input th:value="${user.getUserName()}" readonly type="text" name="userName" class="form-control">
         </div>
 
         <div class="form-group">
@@ -56,30 +55,26 @@
 
         <div class="form-group">
           <label>出生日期</label>
-          <input th:value="${user.getBirthday()}" readonly type="text" name="birthday"
-                 class="form-control data-picker">
+          <input th:value="${#dates.format(user.getBirthday(),'yyyy-MM-dd')}" readonly type="text" name="birthday"
+                 class="form-control">
         </div>
         <div class="form-group">
           <label>年龄</label>
-          <input type="text" th:value="${user.getAge()}" readonly name="age" class="form-control"
-                 placeholder="电话">
+          <input type="text" th:value="${user.getAge()}" readonly name="age" class="form-control">
         </div>
         <div class="form-group">
           <label>电话</label>
-          <input type="text" th:value="${user.getPhone()}" readonly name="phone" class="form-control"
-                 placeholder="电话">
+          <input type="text" th:value="${user.getPhone()}" readonly name="phone" class="form-control">
         </div>
 
         <div class="form-group">
           <label>地址</label>
-          <input th:value="${user.getAddress()}" readonly type="text" name="address" class="form-control"
-                 placeholder="地址">
+          <input th:value="${user.getAddress()}" readonly type="text" name="address" class="form-control">
         </div>
 
         <div class="form-group">
           <label>权限</label>
-          <input th:value="${user.getUserRoleName()}" readonly type="text" name="address" class="form-control"
-                 placeholder="权限">
+          <input th:value="${user.getUserRoleName()}" readonly type="text" name="address" class="form-control">
         </div>
         <button class="btn btn-primary" type="button" th:onclick="|history.back(-1)|">返回</button>
       </form>
