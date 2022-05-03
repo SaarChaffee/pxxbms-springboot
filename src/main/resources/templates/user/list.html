@@ -98,7 +98,8 @@
             <th th:text="${user.getPhone()}"></th>
             <th th:text="${user.getUserRoleName()}"></th>
             <th>
-              <a class="btn btn-sm btn-primary" th:href="@{/user/toMod/{id}(id=${user.getId()})}">修改</a>
+              <a class="btn btn-sm btn-primary" th:href="@{/user/list/{id}(id=${user.getId()})}">查看详情</a>
+              <a class="btn btn-sm btn-primary" th:href="@{/user/toUpd/{id}(id=${user.getId()})}">修改</a>
               <a class="btn btn-sm btn-danger" th:href="@{/user/delUser/{id}(id=${user.getId()})}">删除</a>
             </th>
           </tr>
