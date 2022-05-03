@@ -18,7 +18,7 @@
 </head>
 
 <body class="text-center">
-<form class="form-signin" th:action="@{/user/login}">
+<form class="form-signin" method="POST" th:action="@{/user/login}">
   <img class="mb-4" th:src="@{/img/bootstrap-solid.svg}" alt="" width="72" height="72">
   <h1 class="h3 mb-3 font-weight-normal" th:text="#{tip}"></h1>
   <!--/*@thymesVar id="msg" type=""*/-->
