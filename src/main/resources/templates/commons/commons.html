@@ -3,7 +3,7 @@
 
 <!--顶部栏-->
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" th:fragment="topbar">
-  <a class="navbar-brand col-sm-1" href=""
+  <a class="navbar-brand col-sm-1" th:href="@{/user/list/{id}(id=${session.userSession.getId()})}"
      th:text="${session.userSession.getUserCode()}"></a>
   <ul class="navbar-nav px-3">
     <li class="nav-item text-nowrap">
