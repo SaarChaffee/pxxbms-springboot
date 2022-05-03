@@ -26,7 +26,7 @@
     <div th:replace="~{commons/commons::sidebar(active='user')}"></div>
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-      <form th:action="@{/user/upd}" method="post">
+      <form id="upd_form" th:action="@{/user/upd}" method="post">
         <input type="hidden" name="id" th:value="${user.getId()}">
         <div class="form-group">
           <label>姓名</label>
@@ -69,7 +69,7 @@
                     th:value="${role.getId()}"></option>
           </select>
         </div>
-        <button type="submit" class="btn btn-primary">修改</button>
+        <button type="submit" id="upd_btn" class="btn btn-primary">修改</button>
       </form>
     </main>
   </div>
@@ -78,25 +78,13 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script type="text/javascript" th:src="@{/js/jquery-3.2.1.slim.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery-3.6.0.js}"></script>
 <script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap.min.js}"></script>
 <script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker.js}" th:charset="UTF-8"></script>
 <script type="text/javascript" th:src="@{/js/locales/bootstrap-datetimepicker.zh-CN.js}" th:charset="UTF-8"></script>
+<script type="text/javascript" th:src="@{/js/user.js}"></script>
 
-
-<script th:inline="javascript">
-  let data_picker = $('.data-picker')
-  data_picker.datetimepicker({
-    language: 'zh-CN',
-    format: 'yyyy-mm-dd',
-    initialDate: data_picker.val(),
-    autoclose:true,
-    minView:2,
-    startDate:new Date(new Date().getFullYear() - 100, new Date().getMonth(), new Date().getDate()).toLocaleDateString(),
-    endDate:new Date().toLocaleDateString(),
-  })
-</script>
 
 </body>
 
