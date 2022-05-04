@@ -95,7 +95,9 @@ public class UserController {
   }
   
   @PostMapping( "/upd" )
-  public String upd( User user ) {
+  public String upd( User user, HttpSession session ) {
+    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
+    user.setModifyBy( login.getId() );
     boolean b = userService.updateById( user );
     return "redirect:/user/list";
   }
@@ -107,7 +109,10 @@ public class UserController {
   }
   
   @PostMapping( "/add" )
-  public String add( User user ) {
+  public String add( User user, HttpSession session ) {
+    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
+    user.setCreatedBy( login.getId() );
+    user.setModifyBy( login.getId() );
     boolean b = userService.save( user );
     return "redirect:/user/list";
   }
