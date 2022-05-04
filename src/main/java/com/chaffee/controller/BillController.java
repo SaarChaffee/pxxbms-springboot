@@ -8,17 +8,22 @@ package com.chaffee.controller;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.chaffee.entity.dto.BillCodeDTO;
+import com.chaffee.entity.dto.LoginDTO;
+import com.chaffee.entity.pojo.Bill;
 import com.chaffee.entity.pojo.PaymentMethod;
 import com.chaffee.entity.vo.BillVO;
 import com.chaffee.service.BillService;
 import com.chaffee.service.PaymentMethodService;
+import com.chaffee.util.Constants;
+import com.chaffee.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -57,4 +62,25 @@ public class BillController {
     model.addAttribute( "methodList", paymentMethodService.list() );
     return "bill/add";
   }
+  
+  @PostMapping("/add")
+  public String add( Bill bill, HttpSession session ){
+    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
+    bill.setCreatedBy( login.getId() );
+    bill.setBillTime( LocalDateTime.now() );
+    billService.save( bill );
+    return "redirect:/bill/list";
+  }
+  
+  @GetMapping( "/exist" )
+  @ResponseBody
+  public R exist( @RequestParam( "billCode" ) String billCode ) {
+    BillCodeDTO bill = billService.queryGoodByCode( billCode );
+    if( bill != null ){
+      return R.ok().data( bill );
+    }
+    else return R.error();
+  }
+  
+  
 }
