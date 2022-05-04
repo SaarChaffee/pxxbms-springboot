@@ -32,7 +32,7 @@ src
   │      │  ├─css
   │      │  ├─img
   │      │  └─js
-  │      │      └─locales
+  │      │     └─locales
   │      └─templates
   │          ├─bill
   │          ├─commons
