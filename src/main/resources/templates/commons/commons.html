@@ -3,6 +3,7 @@
 
 <!--顶部栏-->
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" th:fragment="topbar">
+  <input type="hidden" id="path" th:value="${#request.getContextPath()}">
   <a class="navbar-brand col-sm-1" th:href="@{/user/list/{id}(id=${session.userSession.getId()})}"
      th:text="${session.userSession.getUserCode()}"></a>
   <ul class="navbar-nav px-3">
