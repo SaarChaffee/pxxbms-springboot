@@ -55,11 +55,9 @@
     </where>
   </select>
   <select id="queryGoodByCode" resultType="com.chaffee.entity.dto.GoodCodeDTO">
-    select g.*,t.typeName as goodTypeName,u.userName as ownerName
-    from good g,good_type t,user u
+    select g.*
+    from good g
     <where>
-      g.goodType=t.id
-      and g.owner=u.id
       and g.goodCode = #{goodCode}
       and g.deleted = 0
     </where>
