@@ -63,8 +63,8 @@ public class BillController {
     return "bill/add";
   }
   
-  @PostMapping("/add")
-  public String add( Bill bill, HttpSession session ){
+  @PostMapping( "/add" )
+  public String add( Bill bill, HttpSession session ) {
     LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
     bill.setCreatedBy( login.getId() );
     bill.setBillTime( LocalDateTime.now() );
@@ -82,5 +82,13 @@ public class BillController {
     else return R.error();
   }
   
-  
+  @GetMapping( "/toUpd/{id}" )
+  public String toUpd( @PathVariable( "id" ) String billId, Model model ) {
+    long id = StringUtils.isNumber( billId ) ? Long.parseLong( billId ) : 0L;
+    Bill bill = billService.getById( id );
+    List<PaymentMethod> methodList = paymentMethodService.list();
+    model.addAttribute( "bill", bill );
+    model.addAttribute( "methodList", methodList );
+    return "bill/update";
+  }
 }
