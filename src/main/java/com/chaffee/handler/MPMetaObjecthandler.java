@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 public class MPMetaObjecthandler implements MetaObjectHandler {
   @Override
   public void insertFill( MetaObject metaObject ) {
-    this.strictInsertFill( metaObject, "createTime", LocalDateTime::now, LocalDateTime.class );
-    this.strictInsertFill( metaObject, "modifyTime", LocalDateTime::now, LocalDateTime.class );
+    this.strictInsertFill( metaObject, "creationDate", LocalDateTime::now, LocalDateTime.class );
+    this.strictInsertFill( metaObject, "modifyDate", LocalDateTime::now, LocalDateTime.class );
   }
   
   @Override
   public void updateFill( MetaObject metaObject ) {
-    this.strictUpdateFill( metaObject, "modifyTime", LocalDateTime::now, LocalDateTime.class );
+    this.strictUpdateFill( metaObject, "modifyDate", LocalDateTime::now, LocalDateTime.class );
   }
 }
