@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+
 <html lang="en" xmlns:th=http://www.thymeleaf.org>
 
 <head>
@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Dashboard Template for Bootstrap</title>
+  <title>订单一览</title>
   <!-- Bootstrap core CSS -->
   <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
 
@@ -22,21 +22,25 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div th:replace="~{commons/commons::sidebar(active='user')}"></div>
+    <div th:replace="~{commons/commons::sidebar(active='bill')}"></div>
     <main role="main" class=" col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <div class="d-inline-flex container-fluid">
         <div class="p-1">
-          <a class="btn btn-primary " th:href="@{/user/toAdd}">添加用户</a>
+          <a class="btn btn-primary " th:href="@{/bill/toAdd}">添加订单</a>
         </div>
         <form class="form-inline col-auto" role="search">
           <div class="form-group input-group p-1">
-            <input type="text" class="form-control" name="queryUserName" th:value="${queryUserName}" placeholder="用户名">
+            <input type="text" class="form-control" name="queryGoodName" th:value="${queryGoodName}" placeholder="商品名">
+          </div>
+          <div class="form-group input-group p-1">
+            <input type="text" class="form-control" name="queryCustomerName" th:value="${queryCustomerName}"
+                   placeholder="顾客姓名">
           </div>
           <div class="form-group p-sm-1">
-            <select class="form-control" name="queryUserRole">
+            <select class="form-control" name="queryPaymentMethod">
               <option value="0">请选择</option>
-              <option th:each="role:${roleList}" th:text="${role.getRoleName()}" th:value="${role.getId()}"
-                      th:selected="${queryUserRole==role.getId()}"/>
+              <option th:each="method:${methodList}" th:text="${method.getId()}" th:value="${method.getId()}"
+                      th:selected="${queryPaymentMethod==method.getId()}"/>
             </select>
           </div>
           <div class="form-group  sr-only">
@@ -46,7 +50,7 @@
             <button type="submit" class="btn btn-success form-control">搜索</button>
           </div>
           <div class="form-group p-sm-1">
-            <a type="reset" th:href="@{/user/list}" class="btn btn-secondary form-control">重置</a>
+            <a type="reset" th:href="@{/bill/list}" class="btn btn-secondary form-control">重置</a>
           </div>
         </form>
 
@@ -55,40 +59,45 @@
         <table class="table table-striped table-sm">
           <thead>
           <tr>
-            <th>用户账号</th>
-            <th>用户名称</th>
-            <th>年龄</th>
-            <th>性别</th>
-            <th>电话</th>
-            <th>用户角色</th>
+            <th>订单编号</th>
+            <th>商品名称</th>
+            <th>顾客姓名</th>
+            <th>订单金额</th>
+            <th>付款方式</th>
+            <th>创建时间</th>
+            <th>付款时间</th>
             <th>操作</th>
           </tr>
           </thead>
           <tbody>
-          <tr th:each="user:${users}">
-            <th th:text="${user.getUserCode()}"></th>
-            <th th:text="${user.getUserName()}"></th>
-            <th th:text="${user.getAge()}"></th>
-            <th th:text="${user.getGender()==1?'女':'男'}"></th>
-            <th th:text="${user.getPhone()}"></th>
-            <th th:text="${user.getUserRoleName()}"></th>
+          <tr th:each="bill:${billList}">
+            <th th:text="${bill.getBillCode()}"></th>
+            <th th:text="${bill.getGoodName()}"></th>
+            <th th:text="${bill.getCustomerName()}"></th>
+            <th th:text="${bill.getTotalPrice()}"></th>
+            <th th:text="${bill.getPaymentMethodName()}"></th>
+            <th th:text="${#dates.format(bill.getBillTime(),'yyyy-MM-dd HH:mm:SS')}"></th>
+            <th th:text="${#dates.format(bill.getDeliveryTime(),'yyyy-MM-dd HH:mm:SS')}"></th>
             <th>
-              <a class="btn btn-sm btn-primary" th:href="@{/user/list/{id}(id=${user.getId()})}">查看详情</a>
-              <a class="btn btn-sm btn-primary" th:href="@{/user/toUpd/{id}(id=${user.getId()})}">修改</a>
-              <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" th:data-target="|#deleted${user.getId()}|">删除</button>
+              <a class="btn btn-sm btn-primary" th:href="@{/bill/list/{id}(id=${bill.getId()})}">查看详情</a>
+              <a class="btn btn-sm btn-primary" th:href="@{/bill/toUpd/{id}(id=${bill.getId()})}">修改</a>
+              <button type="button" class="btn btn-sm btn-danger" data-toggle="modal"
+                      th:data-target="|#deleted${bill.getId()}|">删除
+              </button>
 
-              <div class="modal fade" th:with="name=${user.getUserName()},userId=${user.getId()}" th:id="|deleted${user.getId()}|">
+              <div class="modal fade" th:with="code=${bill.getBillCode()},billId=${bill.getId()}"
+                   th:id="|deleted${bill.getId()}|">
                 <div class="modal-dialog modal-sm">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h4 class="modal-title">你确定删除以下用户吗</h4>
+                      <h4 class="modal-title">你确定删除以下订单吗</h4>
                       <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                      <h4 class="modal-title">[[${name}]]</h4>
+                      <h4 class="modal-title">[[${code}]]</h4>
                     </div>
                     <div class="modal-footer">
-                      <a class="btn btn-sm btn-danger" th:href="@{/user/delUser/{id}(id=${userId})}">删除</a>
+                      <a class="btn btn-sm btn-danger" th:href="@{/bill/delBill/{id}(id=${billId})}">删除</a>
                       <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">关闭</button>
                     </div>
                   </div>
