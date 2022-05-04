@@ -100,7 +100,26 @@
             <th>
               <a class="btn btn-sm btn-primary" th:href="@{/user/list/{id}(id=${user.getId()})}">查看详情</a>
               <a class="btn btn-sm btn-primary" th:href="@{/user/toUpd/{id}(id=${user.getId()})}">修改</a>
-              <a class="btn btn-sm btn-danger" th:href="@{/user/delUser/{id}(id=${user.getId()})}">删除</a>
+              <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" th:data-target="|#deleted${user.getId()}|">删除</button>
+
+              <div class="modal fade" th:with="name=${user.getUserName()},userId=${user.getId()}" th:id="|deleted${user.getId()}|">
+                <div class="modal-dialog modal-sm">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">你确定删除以下用户吗</h4>
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                      <h4 class="modal-title">[[${name}]]</h4>
+                    </div>
+                    <div class="modal-footer">
+                      <a class="btn btn-sm btn-danger" th:href="@{/user/delUser/{id}(id=${userId})}">删除</a>
+                      <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">关闭</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </th>
           </tr>
           </tbody>
