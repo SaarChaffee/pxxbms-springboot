@@ -57,6 +57,14 @@ public class BillController {
     return "bill/list";
   }
   
+  @GetMapping("/view/{id}")
+  public String list(@PathVariable("id")String billId,Model model){
+    long id = StringUtils.isNumber( billId )? Long.parseLong(billId):0L;
+    BillVO billVO = billService.queryBill( id );
+    model.addAttribute( "bill",billVO );
+    return "bill/view";
+  }
+  
   @GetMapping( "/toAdd" )
   public String toAdd( Model model ) {
     model.addAttribute( "methodList", paymentMethodService.list() );
@@ -90,6 +98,14 @@ public class BillController {
     model.addAttribute( "bill", bill );
     model.addAttribute( "methodList", methodList );
     return "bill/update";
+  }
+  
+  @PostMapping("/upd")
+  public String upd(Bill bill,HttpSession session){
+    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
+    bill.setModifyBy( login.getId() );
+    boolean b = billService.updateById( bill );
+    return "redirect:/bill/list";
   }
   
   @GetMapping("/del/{id}")
