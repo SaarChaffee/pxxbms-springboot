@@ -91,4 +91,11 @@ public class BillController {
     model.addAttribute( "methodList", methodList );
     return "bill/update";
   }
+  
+  @GetMapping("/del/{id}")
+  public String del(@PathVariable("id")String billId){
+    long id = StringUtils.isNumber( billId )? Long.parseLong(billId):0L;
+    boolean b = billService.removeById( id );
+    return "redirect:/bill/list";
+  }
 }
