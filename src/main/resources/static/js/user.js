@@ -24,7 +24,7 @@ $(() => {
         url: "./exist",//请求的url
         data: {userCode: userCode.val()},//请求参数
         dataType: "json",//ajax接口（请求url）返回的数据类型
-        success: function (data) {//data：返回数据（json对象）
+        success: (data) => {//data：返回数据（json对象）
           if (data.success === true) {//账号已存在，错误提示
             userCode.next().attr('class', 'alert alert-danger form-control')
             userCode.next().text("账号已存在")
@@ -35,7 +35,7 @@ $(() => {
             userCode.attr('status', 'true')
           }
         },
-        error: function (data) {//当访问时候，404，500 等非200的错误状态码
+        error: (data) => {//当访问时候，404，500 等非200的错误状态码
           userCode.next().attr('class', 'alert alert-warning form-control')
           userCode.next().text("网络异常")
         }
@@ -94,5 +94,5 @@ $(() => {
         }
       })
   
-
+  
 })
