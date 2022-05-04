@@ -117,7 +117,8 @@ public class UserController {
   public R exist( @RequestParam String userCode ) {
     UserCodeDTO user = userService.queryUserByCode( userCode );
     if( user != null ){
-      return R.ok();
+      return R.ok().data( user );
+      
     }
     else return R.error();
   }
