@@ -57,7 +57,7 @@ public class BillController {
     return "bill/list";
   }
   
-  @GetMapping("/view/{id}")
+  @GetMapping("/list/{id}")
   public String list(@PathVariable("id")String billId,Model model){
     long id = StringUtils.isNumber( billId )? Long.parseLong(billId):0L;
     BillVO billVO = billService.queryBill( id );
