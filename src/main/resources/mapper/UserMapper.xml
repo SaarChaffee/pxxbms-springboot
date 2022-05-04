@@ -49,6 +49,7 @@
       </if>
       and u.deleted = 0
     </where>
+    order by u.userCode
   </select>
   <select id="queryUser" resultType="com.chaffee.entity.vo.UserVO">
     select u.*,ur.roleName as userRoleName
