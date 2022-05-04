@@ -63,7 +63,7 @@ public class UserController {
                       Model model ) {
     userName = StringUtils.isEmpty( userName ) ? "" : userName;
     int userRole = StringUtils.isNumber( role ) && !role.contains( "-" ) ? Integer.parseInt( role ) : 0;
-    int index = StringUtils.isNumber( pageIndex ) && !role.contains( "-" ) ? Integer.parseInt( pageIndex ) : 1;
+    int index = StringUtils.isNumber( pageIndex ) && !pageIndex.contains( "-" ) ? Integer.parseInt( pageIndex ) : 1;
     
     Page<UserVO> page = new Page<>( index, 15 );
     List<UserVO> userList = userService.queryUserList( page, userName, userRole );
