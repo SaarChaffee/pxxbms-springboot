@@ -89,4 +89,22 @@ public class GoodController {
     }
     return R.error();
   }
+  
+  @GetMapping( "/toUpd/{id}" )
+  public String toUpd( @PathVariable( "id" ) String goodId, Model model ) {
+    long id = StringUtils.isNumber( goodId ) ? Long.parseLong( goodId ) : 0L;
+    Good good = goodService.getById( id );
+    List<GoodType> typeList = goodTypeService.list();
+    model.addAttribute( "good", good );
+    model.addAttribute( "typeList", typeList );
+    return "good/update";
+  }
+  
+  @PostMapping("/upd")
+  public String upd(Good good,HttpSession session){
+    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
+    good.setModifyBy( login.getId() );
+    boolean b = goodService.updateById( good );
+    return "redirect:/good/list";
+  }
 }
