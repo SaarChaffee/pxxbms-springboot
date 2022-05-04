@@ -100,11 +100,29 @@ public class GoodController {
     return "good/update";
   }
   
-  @PostMapping("/upd")
-  public String upd(Good good,HttpSession session){
+  @PostMapping( "/upd" )
+  public String upd( Good good, HttpSession session ) {
     LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
     good.setModifyBy( login.getId() );
     boolean b = goodService.updateById( good );
     return "redirect:/good/list";
+  }
+  
+  @GetMapping( "/delGood/{id}" )
+  public String del( @PathVariable( "id" ) String goodId ) {
+    long id = StringUtils.isNumber( goodId ) ? Long.parseLong( goodId ) : 0L;
+    boolean b = goodService.removeById( id );
+    return "redirect:/good/list";
+  }
+  
+  @GetMapping( "/get/{id}" )
+  @ResponseBody
+  public R getGoodById( @PathVariable( "id" ) String goodId ) {
+    long id = StringUtils.isNumber( goodId ) ? Long.parseLong( goodId ) : 0L;
+    Good good = goodService.getById( id );
+    if( good != null ){
+      return R.ok().data( good );
+    }
+    else return R.error();
   }
 }
