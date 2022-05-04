@@ -8,17 +8,21 @@ package com.chaffee.controller;
 
 import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.chaffee.entity.dto.GoodCodeDTO;
+import com.chaffee.entity.dto.LoginDTO;
+import com.chaffee.entity.pojo.Good;
 import com.chaffee.entity.pojo.GoodType;
 import com.chaffee.entity.vo.GoodVO;
 import com.chaffee.service.GoodService;
 import com.chaffee.service.GoodTypeService;
+import com.chaffee.util.Constants;
+import com.chaffee.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -51,5 +55,38 @@ public class GoodController {
     model.addAttribute( "pageParam", page );
     model.addAttribute( "goods", goodList );
     return "good/list";
+  }
+  
+  @GetMapping( "/list/{id}" )
+  public String list( @PathVariable( "id" ) String goodId, Model model ) {
+    long id = StringUtils.isNumber( goodId ) ? Long.parseLong( goodId ) : 0L;
+    GoodVO goodVO = goodService.queryGood( id );
+    model.addAttribute( "good", goodVO );
+    return "good/view";
+  }
+  
+  @GetMapping( "/toAdd" )
+  public String toAdd( Model model ) {
+    model.addAttribute( "typeList", goodTypeService.list() );
+    return "good/add";
+  }
+  
+  @PostMapping( "/add" )
+  public String add( Good good, HttpSession session ) {
+    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
+    good.setCreatedBy( login.getId() );
+    good.setModifyBy( login.getId() );
+    goodService.save( good );
+    return "redirect:/user/lsit";
+  }
+  
+  @GetMapping( "/exist" )
+  @ResponseBody
+  public R exist( @RequestParam String goodCode ) {
+    GoodCodeDTO good = goodService.queryGoodByCode( goodCode );
+    if( good != null ){
+      return R.ok().data( good );
+    }
+    return R.error();
   }
 }
