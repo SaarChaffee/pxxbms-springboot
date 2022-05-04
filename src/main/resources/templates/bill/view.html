@@ -23,60 +23,106 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div th:replace="~{commons/commons::sidebar(active='user')}"></div>
+    <div th:replace="~{commons/commons::sidebar(active='bill')}"></div>
 
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <form class="form-control">
-
-        <div class="form-group">
-          <label>用户账号：</label>
-          <input type="text" status="" readonly name="userCode" class="form-control" id="userCode"
-                 th:value="${user.getUserCode()}">
-        </div>
-
-        <div class="form-group">
-          <label>姓名</label>
-          <input th:value="${user.getUserName()}" readonly type="text" name="userName" class="form-control">
-        </div>
-
-        <div class="form-group">
-          <label>性别</label><br/>
-          <div class="form-check form-check-inline">
-            <input th:checked="${user.getGender()==1}" disabled class="form-check-input" type="radio" name="gender"
-                   value="1">
-            <label class="form-check-label">女</label>
+        <form>
+          <div class="form-group">
+            <label>订单编号：</label>
+            <input type="text" status="" placeholder="订单编号"
+                   class="form-control" readonly id="billCode" th:value="${bill.getBillCode()}">
+            <div class="alert sr-only" role="alert">
+            </div>
           </div>
-          <div class="form-check form-check-inline">
-            <input th:checked="${user.getGender()==2}" disabled class="form-check-input" type="radio" name="gender"
-                   value="2">
-            <label class="form-check-label">男</label>
+
+          <div class="form-group">
+            <label>商品编号</label>
+            <input th:value="${bill.getGoodCode()}" readonly type="text" id="goodCode" class="form-control"
+                   placeholder="商品编号">
+            <div class="alert sr-only" role="alert">
+            </div>
           </div>
-        </div>
 
-        <div class="form-group">
-          <label>出生日期</label>
-          <input th:value="${#dates.format(user.getBirthday(),'yyyy-MM-dd')}" readonly type="text" name="birthday"
-                 class="form-control">
-        </div>
-        <div class="form-group">
-          <label>年龄</label>
-          <input type="text" th:value="${user.getAge()}" readonly name="age" class="form-control">
-        </div>
-        <div class="form-group">
-          <label>电话</label>
-          <input type="text" th:value="${user.getPhone()}" readonly name="phone" class="form-control">
-        </div>
+          <div class="form-group">
+            <label>商品名</label>
+            <input th:value="${bill.getGoodName()}" type="text" id="goodName" readonly class="form-control"
+                   placeholder="商品名">
+            <input type="hidden" id="inventory">
+            <div class="alert sr-only" role="alert">
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label>地址</label>
-          <input th:value="${user.getAddress()}" readonly type="text" name="address" class="form-control">
-        </div>
+          <div class="form-group">
+            <label>购买数量</label>
+            <input th:value="${bill.getQuantity()}" type="text" readonly name="quantity" id="quantity" class="form-control"
+                   placeholder="购买数量">
+            <div class="alert sr-only" role="alert">
+            </div>
+          </div>
 
-        <div class="form-group">
-          <label>权限</label>
-          <input th:value="${user.getUserRoleName()}" readonly type="text" name="address" class="form-control">
-        </div>
-        <button class="btn btn-primary" type="button" th:onclick="|history.back(-1)|">返回</button>
+          <div class="form-group">
+            <label>商品单价</label>
+            <input th:value="${bill.getGoodPrice()}" type="text" readonly name="goodPrice" id="goodPrice" class="form-control"
+                   placeholder="商品单价">
+            <div class="alert sr-only" role="alert">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>总价</label>
+            <input th:value="${bill.getTotalPrice()}" readonly type="text" name="totalPrice" id="totalPrice"
+                   class="form-control"
+                   placeholder="总价">
+            <div class="alert sr-only" role="alert">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>顾客账号</label>
+            <input th:value="${bill.getCustomerCode()}" status="" readonly type="text" id="customerCode"
+                   class="form-control"
+                   placeholder="顾客账号">
+            <div class="alert sr-only" role="alert">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>顾客名称</label>
+            <input th:value="${bill.getCustomerName()}" status="" type="text" readonly id="customerName" class="form-control"
+                   placeholder="顾客名称">
+            <div class="alert sr-only" role="alert">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>地址</label>
+            <input th:value="${bill.getAddress()}" readonly type="text" name="address" class="form-control"
+                   placeholder="地址">
+          </div>
+
+          <div class="form-group">
+            <label>支付方式</label>
+            <input th:value="${bill.getPaymentMethodName()}" readonly type="text" class="form-control"
+                   placeholder="支付方式">
+          </div>
+
+          <div class="form-group">
+            <label>下单时间：</label>
+            <input type="text" status="" placeholder="下单时间"
+                   class="form-control" readonly  th:value="${#dates.format(bill.getBillTime(),'yyyy-MM-dd hh:mm:ss')}">
+            <div class="alert sr-only" role="alert">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>支付时间：</label>
+            <input type="text" status="" placeholder="支付时间"
+                   class="form-control" readonly  th:value="${#dates.format(bill.getDeliveryTime(),'yyyy-MM-dd hh:mm:ss')}">
+            <div class="alert sr-only" role="alert">
+            </div>
+          </div>
+          <button class="btn btn-primary" type="button" th:onclick="|history.back(-1)|">返回</button>
       </form>
     </main>
   </div>
