@@ -28,6 +28,7 @@
     <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
       <form id="upd_form" th:action="@{/user/upd}" method="post">
         <input type="hidden" name="id" th:value="${user.getId()}">
+        <input type="hidden" name="version" th:value="${user.getVersion()}">
         <div class="form-group">
           <label>姓名</label>
           <input th:value="${user.getUserName()}" type="text" name="userName" class="form-control"
