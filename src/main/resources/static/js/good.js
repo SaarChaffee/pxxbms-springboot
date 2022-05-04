@@ -5,13 +5,14 @@ $(() => {
   let owner = $('#owner')
   let goodForm = $('#goodForm')
   let goodBtn = $('#goodBtn')
-  
+  let updBtn = $('#updBtn')
+  let path = $('#path').val()
   goodCode
       .bind("blur", () => {
         if (goodCode.val() != null && goodCode.val() !== "") {
           $.ajax({
             type: 'GET',
-            url: './exist',
+            url: path + '/good/exist',
             data: {goodCode: goodCode.val()},
             dataType: 'json',
             success: (data) => {
@@ -40,7 +41,7 @@ $(() => {
         if (ownerCode.val() != null && ownerCode.val() !== "") {
           $.ajax({
             type: 'GET',
-            url: '../user/exist',
+            url: path + '/user/exist',
             data: {userCode: ownerCode.val()},
             dataType: 'json',
             success: (data) => {
@@ -57,6 +58,7 @@ $(() => {
               }
             },
             error: (err) => {
+              console.log(err)
               ownerCode.next().attr('class', 'alert alert-warning form-control')
               ownerCode.next().text("网络异常")
               ownerCode.attr('status', 'false')
@@ -75,6 +77,15 @@ $(() => {
       .bind('click', () => {
         if (goodCode.attr('status') === 'true' &&
             ownerCode.attr('status') === 'true') {
+          if (confirm("是否确认提交数据")) {
+            goodForm.submit()
+          }
+        }
+      })
+  
+  updBtn
+      .bind('click', () => {
+        if (ownerCode.attr('status') === 'true') {
           if (confirm("是否确认提交数据")) {
             goodForm.submit()
           }
