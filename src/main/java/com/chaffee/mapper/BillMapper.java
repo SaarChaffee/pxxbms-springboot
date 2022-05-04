@@ -1,8 +1,14 @@
 package com.chaffee.mapper;
 
-import com.chaffee.entity.pojo.Bill;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.chaffee.entity.dto.BillCodeDTO;
+import com.chaffee.entity.pojo.Bill;
+import com.chaffee.entity.vo.BillVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
 * @author RGB
@@ -12,7 +18,14 @@ import org.apache.ibatis.annotations.Mapper;
 */
 @Mapper
 public interface BillMapper extends BaseMapper<Bill> {
-
+  List<BillVO> queryBillList( @Param("page")IPage<BillVO> page,
+                              @Param( "goodName" )String goodName,
+                              @Param( "customerName" )String customerName,
+                              @Param( "paymentMethod" )int paymentMethod);
+  
+  BillVO queryBill(@Param( "id" )long id);
+  
+  BillCodeDTO queryGoodByCode(@Param( "billCode" )String billCode);
 }
 
 

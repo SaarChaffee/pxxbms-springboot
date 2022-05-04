@@ -1,35 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.chaffee.mapper.BillMapper">
-
-    <resultMap id="BaseResultMap" type="com.chaffee.entity.pojo.Bill">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="billCode" column="billCode" jdbcType="VARCHAR"/>
-            <result property="goodCode" column="goodCode" jdbcType="BIGINT"/>
-            <result property="quantity" column="quantity" jdbcType="BIGINT"/>
-            <result property="goodPrice" column="goodPrice" jdbcType="DOUBLE"/>
-            <result property="totalPrice" column="totalPrice" jdbcType="DOUBLE"/>
-            <result property="customerCode" column="customerCode" jdbcType="BIGINT"/>
-            <result property="address" column="address" jdbcType="VARCHAR"/>
-            <result property="billTime" column="billTime" jdbcType="TIMESTAMP"/>
-            <result property="paymentMethod" column="paymentMethod" jdbcType="BIGINT"/>
-            <result property="deliveryTime" column="deliveryTime" jdbcType="TIMESTAMP"/>
-            <result property="createdBy" column="createdBy" jdbcType="BIGINT"/>
-            <result property="creationDate" column="creationDate" jdbcType="TIMESTAMP"/>
-            <result property="modifyBy" column="modifyBy" jdbcType="BIGINT"/>
-            <result property="modifyDate" column="modifyDate" jdbcType="TIMESTAMP"/>
-            <result property="version" column="version" jdbcType="BIGINT"/>
-            <result property="deleted" column="deleted" jdbcType="INTEGER"/>
-    </resultMap>
-
-    <sql id="Base_Column_List">
-        id,billCode,goodCode,
+  
+  <resultMap id="BaseResultMap" type="com.chaffee.entity.pojo.Bill">
+    <id property="id" column="id" jdbcType="BIGINT"/>
+    <result property="billCode" column="billCode" jdbcType="VARCHAR"/>
+    <result property="goodCode" column="goodCode" jdbcType="BIGINT"/>
+    <result property="quantity" column="quantity" jdbcType="BIGINT"/>
+    <result property="goodPrice" column="goodPrice" jdbcType="DOUBLE"/>
+    <result property="totalPrice" column="totalPrice" jdbcType="DOUBLE"/>
+    <result property="customerCode" column="customerCode" jdbcType="BIGINT"/>
+    <result property="address" column="address" jdbcType="VARCHAR"/>
+    <result property="billTime" column="billTime" jdbcType="TIMESTAMP"/>
+    <result property="paymentMethod" column="paymentMethod" jdbcType="BIGINT"/>
+    <result property="deliveryTime" column="deliveryTime" jdbcType="TIMESTAMP"/>
+    <result property="createdBy" column="createdBy" jdbcType="BIGINT"/>
+    <result property="creationDate" column="creationDate" jdbcType="TIMESTAMP"/>
+    <result property="modifyBy" column="modifyBy" jdbcType="BIGINT"/>
+    <result property="modifyDate" column="modifyDate" jdbcType="TIMESTAMP"/>
+    <result property="version" column="version" jdbcType="BIGINT"/>
+    <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id
+    ,billCode,goodCode,
         quantity,goodPrice,totalPrice,
         customerCode,address,billTime,
         paymentMethod,deliveryTime,createdBy,
         creationDate,modifyBy,modifyDate,
         version,deleted
-    </sql>
+  </sql>
+  <select id="queryBillList" resultType="com.chaffee.entity.vo.BillVO">
+    select b.*,
+    p.typeName as paymentMethodName,
+    u.userName as customerName,
+    g.goodName as goodName
+    from bill b,payment_method p,user u,good g
+    <where>
+      b.paymentMethod = p.id
+      and b.customerCode=u.id
+      and b.goodCode = g.id
+      <if test="!goodName.isEmpty()">
+        and g.goodName like CONCAT('%',#{goodName},'%')
+      </if>
+      <if test="!customerName.isEmpty()">
+        and u.userName like CONCAT('%',#{customerName},'%')
+      </if>
+      <if test="paymentMethod>0">
+        and b.paymentMethod = #{paymentMethod}
+      </if>
+      and b.deleted = 0
+    </where>
+  </select>
+  <select id="queryBill" resultType="com.chaffee.entity.vo.BillVO">
+    select b.*,
+    p.typeName as paymentMethodName,
+    u.userName as customerName,
+    g.goodName as goodName
+    from bill b,payment_method p,user u,good g
+    <where>
+      b.paymentMethod = p.id
+      and b.customerCode=u.id
+      and b.goodCode = g.id
+      and b.id = #{id}
+      and b.deleted = 0
+    </where>
+  </select>
+  <select id="queryGoodByCode" resultType="com.chaffee.entity.dto.BillCodeDTO">
+    select b.*
+    from bill b
+    <where>
+      b.billCode = #{billCode}
+      and b.deleted = 0
+    </where>
+  </select>
 </mapper>
