@@ -51,4 +51,10 @@ public class BillController {
     model.addAttribute( "pageParam", page );
     return "bill/list";
   }
+  
+  @GetMapping( "/toAdd" )
+  public String toAdd( Model model ) {
+    model.addAttribute( "methodList", paymentMethodService.list() );
+    return "bill/add";
+  }
 }
