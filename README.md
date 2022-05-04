@@ -15,21 +15,35 @@ src
   │  │  └─com
   │  │      └─chaffee
   │  │          ├─config
+  │  │          ├─controller
   │  │          ├─entity
   │  │          │  ├─dto
   │  │          │  ├─pojo
   │  │          │  └─vo
   │  │          ├─handler
   │  │          ├─mapper
-  │  │          └─service
-  │  │              └─impl
+  │  │          ├─service
+  │  │          │  └─impl
+  │  │          └─util
   │  └─resources
+  │      ├─i18n
   │      ├─mapper
   │      ├─static
+  │      │  ├─css
+  │      │  ├─img
+  │      │  └─js
+  │      │      └─locales
   │      └─templates
+  │          ├─bill
+  │          ├─commons
+  │          ├─error
+  │          ├─good
+  │          └─user
   └─test
       └─java
           └─com
               └─chaffee
+                  └─mapper
+
 
 ```
