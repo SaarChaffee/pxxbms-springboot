@@ -18,7 +18,7 @@
 </head>
 
 <body class="text-center">
-<form class="form-signin" method="POST" th:action="@{/user/login}">
+<form class="form-signin" method="POST" th:action="@{/login}">
   <img class="mb-4" th:src="@{/img/bootstrap-solid.svg}" alt="" width="72" height="72">
   <h1 class="h3 mb-3 font-weight-normal" th:text="#{tip}"></h1>
   <!--/*@thymesVar id="msg" type=""*/-->
@@ -27,7 +27,7 @@
   <input type="password" name="userpasswd" class="form-control" th:placeholder="#{PassWord}" required="">
   <div class="checkbox mb-3">
     <label>
-      <input type="checkbox" name="remember-me" value="true" th:text="#{Remember}">
+      <input type="checkbox" name="remember" value="remember-me" th:text="#{Remember}">
     </label>
   </div>
   <button class="btn btn-lg btn-primary btn-block" type="submit" th:text="#{SignIn}"></button>
