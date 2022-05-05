@@ -8,7 +8,6 @@ PXX background management system
 ## 目录结构
 
 ```
-building...
 src
   ├─main
   │  ├─java
@@ -44,6 +43,7 @@ src
           └─com
               └─chaffee
                   └─mapper
+
 
 
 ```
