@@ -33,29 +33,6 @@ public class UserController {
   @Autowired
   UserRoleService userRoleService;
   
-  @PostMapping( "/login" )
-  public String login( @RequestParam( "username" ) String username,
-                       @RequestParam( "userpasswd" ) String password,
-                       @RequestParam( value = "remember-me", required = false ) Boolean remember,
-                       Model model,
-                       HttpSession session ) {
-    LoginDTO login = userService.queryLogin( username, password );
-    if( login != null ){
-      session.setAttribute( Constants.USER_SESSION, login );
-      return "redirect:/main.html";
-    }
-    else{
-      model.addAttribute( Constants.MSG, "用户信息错误，请重新输入" );
-      return "index";
-    }
-  }
-  
-  @GetMapping( "/logout" )
-  public String logout( HttpSession session ) {
-    session.invalidate();
-    return "redirect:/index.html";
-  }
-  
   @GetMapping( "/list" )
   public String list( @RequestParam( value = "queryUserName", required = false ) String userName,
                       @RequestParam( value = "queryUserRole", required = false ) String role,
