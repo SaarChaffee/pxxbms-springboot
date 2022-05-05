@@ -1,9 +1,14 @@
-PXX background management system
+# PXX background management system
+一个简单的后台管理系统（是个课设^_^），基于 `SpringBoot`, `MybatisPlus`, `Thymeleaf`, `SpringSecurity` 
+
+
+另外还有 `Druid`, `Swagger`, `Lombok`
 
 ## 环境
 
 - `JDK 17`
 - `SpringBoot 2.6.7`
+- `MySQL 8`
 
 ## 目录结构
 
