@@ -20,12 +20,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   
   @Override
   protected void configure( HttpSecurity http ) throws Exception {
-
+    
+    http.authorizeRequests()
+        .antMatchers( "/", "/index.html" ).permitAll()
+        .antMatchers( "/login" ).permitAll()
+        .antMatchers( "/*" ).authenticated();
+    
+    http.formLogin()
+        .usernameParameter( "username" )
+        .passwordParameter( "userpasswd" )
+        .loginPage( "/" )
+        .loginProcessingUrl( "/login" )
+        .defaultSuccessUrl( "/main.html" );
+    http.rememberMe().rememberMeParameter( "remember" );
+    http.csrf().disable();
+    http.logout().logoutSuccessUrl( "/" );
   }
   
   @Override
   protected void configure( AuthenticationManagerBuilder auth ) throws Exception {
-    auth.userDetailsService(securityService).passwordEncoder( new PasswordEncoderConfig() );
+    auth.userDetailsService( securityService ).passwordEncoder( new PasswordEncoderConfig() );
   }
   
   
