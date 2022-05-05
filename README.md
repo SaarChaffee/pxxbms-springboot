@@ -1,4 +1,4 @@
-# PXX background management system
+# PXX Background Management System
 一个简单的后台管理系统，基于 `SpringBoot`, `MybatisPlus`, `Thymeleaf`, `SpringSecurity` 
 
 
