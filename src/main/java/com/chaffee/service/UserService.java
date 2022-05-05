@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface UserService extends IService<User> {
   
-  LoginDTO queryLogin( String userCode, String passWord );
+  LoginDTO queryLogin( String userCode);
   
   List<UserVO> queryUserList( IPage<UserVO> page, String userName, int userRole );
   

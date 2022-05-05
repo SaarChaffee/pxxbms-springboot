@@ -9,8 +9,10 @@ import com.chaffee.entity.pojo.User;
 import com.chaffee.entity.vo.UserVO;
 import com.chaffee.mapper.UserMapper;
 import com.chaffee.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -21,13 +23,14 @@ import java.util.List;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService {
-  LoginDTO login = null;
-  
+  @Autowired
+  HttpSession session;
   @Override
-  public LoginDTO queryLogin( String userCode, String passWord ) {
-    if( !StringUtils.isEmpty( userCode ) && !StringUtils.isEmpty( passWord ) ){
+  public LoginDTO queryLogin( String userCode ) {
+    LoginDTO login = null;
+    if( !StringUtils.isEmpty( userCode ) ){
       login = baseMapper.queryLogin( userCode );
-      if( login != null && StringUtils.equals( passWord, login.getUserPassword() ) ){
+      if( login != null ){
         return login;
       }
     }
@@ -48,6 +51,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
   public UserCodeDTO queryUserByCode( String userCode ) {
     return baseMapper.queryUserByCode( userCode );
   }
+  
+
 }
 
 
