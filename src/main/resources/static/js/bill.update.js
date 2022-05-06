@@ -53,7 +53,7 @@ $(() => {
       .on("blur", () => {
         if (quantity.val() !== "" && quantity.val() !== null) {
           if (/\d+/.test(quantity.val())) {
-            if (quantity.val() > inventory.val()) {
+            if (Number(quantity.val() )> Number(inventory.val())) {
               quantity.next().attr('class', 'alert alert-danger form-control')
               quantity.next().text('库存不足')
               totalPrice.val('');

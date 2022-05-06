@@ -11,7 +11,7 @@ function priceReg(value) {
 
 //解决精度丢失问题
 function accMul(arg1, arg2) {
-  var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+  let m = 0, s1 = arg1.toString(), s2 = arg2.toString();
   try {
     m += s1.split(".")[1].length
   } catch (e) {
@@ -106,7 +106,7 @@ $(() => {
       .on("blur", () => {
         if (quantity.val() !== "" && quantity.val() !== null) {
           if (/\d+/.test(quantity.val())) {
-            if (quantity.val() > inventory.val()) {
+            if (Number(quantity.val() )> Number(inventory.val())) {
               quantity.next().attr('class', 'alert alert-danger form-control')
               quantity.next().text('库存不足')
               totalPrice.val('');
