@@ -75,7 +75,11 @@ public class UserController {
   public String upd( User user, HttpSession session ) {
     LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
     user.setModifyBy( login.getId() );
-    boolean b = userService.updateById( user );
+    try{
+      userService.updateById( user );
+    }catch( Exception e ){
+      e.printStackTrace();
+    }
     return "redirect:/user/list";
   }
   
@@ -90,7 +94,11 @@ public class UserController {
     LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
     user.setCreatedBy( login.getId() );
     user.setModifyBy( login.getId() );
-    boolean b = userService.save( user );
+    try{
+      userService.save( user );
+    }catch( Exception e ){
+      e.printStackTrace();
+    }
     return "redirect:/user/list";
   }
   

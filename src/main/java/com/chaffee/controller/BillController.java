@@ -76,7 +76,11 @@ public class BillController {
     LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
     bill.setCreatedBy( login.getId() );
     bill.setBillTime( LocalDateTime.now() );
-    billService.save( bill );
+    try{
+      billService.save( bill );
+    }catch( Exception e ){
+      e.printStackTrace();
+    }
     return "redirect:/bill/list";
   }
   
@@ -104,7 +108,11 @@ public class BillController {
   public String upd(Bill bill,HttpSession session){
     LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
     bill.setModifyBy( login.getId() );
-    boolean b = billService.updateById( bill );
+    try{
+      billService.updateById( bill );
+    }catch( Exception e ){
+      e.printStackTrace();
+    }
     return "redirect:/bill/list";
   }
   

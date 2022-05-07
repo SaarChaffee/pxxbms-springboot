@@ -76,7 +76,11 @@ public class GoodController {
     LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
     good.setCreatedBy( login.getId() );
     good.setModifyBy( login.getId() );
-    goodService.save( good );
+    try{
+      goodService.save( good );
+    }catch( Exception e ){
+      e.printStackTrace();
+    }
     return "redirect:/user/lsit";
   }
   
@@ -104,7 +108,11 @@ public class GoodController {
   public String upd( Good good, HttpSession session ) {
     LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
     good.setModifyBy( login.getId() );
-    boolean b = goodService.updateById( good );
+    try{
+      goodService.updateById( good );
+    }catch( Exception e ){
+      e.printStackTrace();
+    }
     return "redirect:/good/list";
   }
   
