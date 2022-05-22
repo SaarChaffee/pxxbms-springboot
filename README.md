@@ -1,5 +1,5 @@
-# PXX Background Management System
-一个简单的后台管理系统，基于 `SpringBoot`, `MybatisPlus`, `Thymeleaf`, `SpringSecurity` 
+# PXX Background Management System -- Back-end
+一个简单的后台管理系统后端，基于 `SpringBoot`, `MybatisPlus`, `SpringSecurity` , `jwt`
 
 
 另外还有 `Druid`, `Swagger`, `Lombok`
@@ -10,45 +10,3 @@
 - `SpringBoot 2.6.7`
 - `MySQL 8`
 
-## 目录结构
-
-```
-src
-  ├─main
-  │  ├─java
-  │  │  └─com
-  │  │      └─chaffee
-  │  │          ├─config
-  │  │          ├─controller
-  │  │          ├─entity
-  │  │          │  ├─dto
-  │  │          │  ├─pojo
-  │  │          │  └─vo
-  │  │          ├─handler
-  │  │          ├─mapper
-  │  │          ├─service
-  │  │          │  └─impl
-  │  │          └─util
-  │  └─resources
-  │      ├─i18n
-  │      ├─mapper
-  │      ├─static
-  │      │  ├─css
-  │      │  ├─img
-  │      │  └─js
-  │      │     └─locales
-  │      └─templates
-  │          ├─bill
-  │          ├─commons
-  │          ├─error
-  │          ├─good
-  │          └─user
-  └─test
-      └─java
-          └─com
-              └─chaffee
-                  └─mapper
-
-
-
-```
