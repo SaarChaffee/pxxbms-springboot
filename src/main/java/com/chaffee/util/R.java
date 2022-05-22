@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Data
 @ApiModel( value = "全局统一返回结果" )
-public class R<T> {
+public class R {
   
   @ApiModelProperty( value = "是否成功" )
   private Boolean success;
@@ -24,7 +24,7 @@ public class R<T> {
   private Map<String, Object> datas;
   
   @ApiModelProperty( value = "返回DTO" )
-  private T data;
+  private Object data;
   
   private R() {
   }
@@ -81,7 +81,7 @@ public class R<T> {
     return this;
   }
   
-  public R<T> data( T data ) {
+  public R data( Object data ) {
     this.setData( data );
     return this;
   }
