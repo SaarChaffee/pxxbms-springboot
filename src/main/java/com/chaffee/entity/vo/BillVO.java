@@ -87,5 +87,9 @@ public class BillVO implements Serializable {
    * 支付方式
    */
   private String paymentMethodName;
+  /**
+   * 商品数量
+   */
+  private Long goodCount;
   
 }
