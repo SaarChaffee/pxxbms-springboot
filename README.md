@@ -1,4 +1,4 @@
-# PXX Background Management System -- Back-end
+# PXX Background Management System -- Back-End
 一个简单的后台管理系统后端，基于 `SpringBoot`, `MybatisPlus`, `SpringSecurity` , `jwt`
 
 
