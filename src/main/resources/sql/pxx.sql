@@ -38,14 +38,15 @@ CREATE TABLE `bill` (
   `modifyDate` datetime DEFAULT NULL COMMENT '修改时间',
   `version` bigint NOT NULL DEFAULT '1',
   `deleted` int NOT NULL DEFAULT '0',
+  `goodCount` bigint DEFAULT NULL COMMENT '商品数量',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `bill` */
 
-insert  into `bill`(`id`,`billCode`,`goodCode`,`quantity`,`goodPrice`,`totalPrice`,`customerCode`,`address`,`billTime`,`paymentMethod`,`deliveryTime`,`createdBy`,`creationDate`,`modifyBy`,`modifyDate`,`version`,`deleted`) values 
-(8,'10',1,24,5.3,127.2,2,'','2022-03-27 18:00:00',1,NULL,1,'2022-03-27 18:00:00',1,'2022-03-27 09:40:33',1,0),
-(10,'133',1,24,5.3,127.2,2,'中国','2022-03-27 10:30:52',1,NULL,1,'2022-03-27 10:30:52',NULL,NULL,1,0);
+insert  into `bill`(`id`,`billCode`,`goodCode`,`quantity`,`goodPrice`,`totalPrice`,`customerCode`,`address`,`billTime`,`paymentMethod`,`deliveryTime`,`createdBy`,`creationDate`,`modifyBy`,`modifyDate`,`version`,`deleted`,`goodCount`) values 
+(8,'10',1,24,5.3,127.2,2,'','2022-03-27 18:00:00',1,NULL,1,'2022-03-27 18:00:00',1,'2022-03-27 09:40:33',1,0,NULL),
+(10,'133',1,24,5.3,127.2,2,'中国','2022-03-27 10:30:52',1,NULL,1,'2022-03-27 10:30:52',NULL,NULL,1,0,NULL);
 
 /*Table structure for table `bill_good` */
 
@@ -73,7 +74,7 @@ DROP TABLE IF EXISTS `good`;
 CREATE TABLE `good` (
   `id` bigint NOT NULL COMMENT '主键ID',
   `goodCode` varchar(15) NOT NULL COMMENT '商品编号',
-  `goodType` bigint NOT NULL COMMENT '商品类别',
+  `parentType` bigint NOT NULL COMMENT '商品父类别',
   `goodName` varchar(20) NOT NULL COMMENT '商品名',
   `inventory` bigint NOT NULL COMMENT '商品库存',
   `owner` bigint NOT NULL COMMENT '商品拥有者(取自用户表)',
@@ -83,21 +84,22 @@ CREATE TABLE `good` (
   `modifyDate` datetime DEFAULT NULL COMMENT '修改时间',
   `version` bigint NOT NULL DEFAULT '1',
   `deleted` int NOT NULL DEFAULT '0',
+  `childType` bigint DEFAULT NULL COMMENT '商品子类别',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `good` */
 
-insert  into `good`(`id`,`goodCode`,`goodType`,`goodName`,`inventory`,`owner`,`createdBy`,`creationDate`,`modifyBy`,`modifyDate`,`version`,`deleted`) values 
-(1,'1',2,'脉动',500,2,0,NULL,1,'2022-05-06 19:02:26',2,0),
-(2,'2',1,'辣条',100,2,0,NULL,1,'2022-03-13 11:16:38',1,0),
-(3,'1919810',1,'红茶',114514,2,1,'2022-03-13 16:29:22',NULL,NULL,1,0),
-(6,'233',1,'临',1,4,4,'2022-03-13 17:10:44',NULL,NULL,1,0),
-(11,'13',1,'脉动',114514,2,1,'2022-03-13 22:47:50',1,'2022-05-04 15:52:01',2,0),
-(14,'19198100',1,'新鲜的',100,2,1,'2022-03-16 21:16:06',1,'2022-05-04 15:52:23',2,0),
-(18,'114515',2,'太新鲜的',1919,2,1,'2022-03-26 23:09:10',1,'2022-05-04 15:52:48',4,0),
-(19,'19',1,'新鲜的',100,1,1,'2022-03-27 00:42:01',1,'2022-05-04 15:52:12',2,0),
-(1521732820681482241,'131331',1,'1',114514,2,NULL,NULL,NULL,NULL,1,0);
+insert  into `good`(`id`,`goodCode`,`parentType`,`goodName`,`inventory`,`owner`,`createdBy`,`creationDate`,`modifyBy`,`modifyDate`,`version`,`deleted`,`childType`) values 
+(1,'1',2,'脉动',500,2,0,NULL,1,'2022-05-06 19:02:26',2,0,NULL),
+(2,'2',1,'辣条',100,2,0,NULL,1,'2022-03-13 11:16:38',1,0,NULL),
+(3,'1919810',1,'红茶',114514,2,1,'2022-03-13 16:29:22',NULL,NULL,1,0,NULL),
+(6,'233',1,'临',1,4,4,'2022-03-13 17:10:44',NULL,NULL,1,0,NULL),
+(11,'13',1,'脉动',114514,2,1,'2022-03-13 22:47:50',1,'2022-05-04 15:52:01',2,0,NULL),
+(14,'19198100',1,'新鲜的',100,2,1,'2022-03-16 21:16:06',1,'2022-05-04 15:52:23',2,0,NULL),
+(18,'114515',2,'太新鲜的',1919,2,1,'2022-03-26 23:09:10',1,'2022-05-04 15:52:48',4,0,NULL),
+(19,'19',1,'新鲜的',100,1,1,'2022-03-27 00:42:01',1,'2022-05-04 15:52:12',2,0,NULL),
+(1521732820681482241,'131331',1,'1',114514,2,NULL,NULL,NULL,NULL,1,0,NULL);
 
 /*Table structure for table `good_type` */
 
@@ -113,18 +115,19 @@ CREATE TABLE `good_type` (
   `modifyDate` datetime DEFAULT NULL COMMENT '修改时间',
   `version` bigint DEFAULT '1',
   `deleted` int DEFAULT '0',
+  `parentId` bigint DEFAULT NULL COMMENT '父类别id',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `good_type` */
 
-insert  into `good_type`(`id`,`typeCode`,`typeName`,`createdBy`,`creationDate`,`modifyBy`,`modifyDate`,`version`,`deleted`) values 
-(0,3,NULL,0,NULL,0,NULL,1,0),
-(1,1,'饮食',NULL,NULL,NULL,NULL,1,0),
-(2,2,'饮料',NULL,NULL,NULL,NULL,1,0),
-(4,4,'护肤品',NULL,NULL,NULL,NULL,1,0),
-(5,5,'文具',NULL,NULL,NULL,NULL,1,0),
-(6,6,'生活用品',NULL,NULL,NULL,NULL,1,0);
+insert  into `good_type`(`id`,`typeCode`,`typeName`,`createdBy`,`creationDate`,`modifyBy`,`modifyDate`,`version`,`deleted`,`parentId`) values 
+(0,3,NULL,0,NULL,0,NULL,1,0,NULL),
+(1,1,'饮食',NULL,NULL,NULL,NULL,1,0,NULL),
+(2,2,'饮料',NULL,NULL,NULL,NULL,1,0,NULL),
+(4,4,'护肤品',NULL,NULL,NULL,NULL,1,0,NULL),
+(5,5,'文具',NULL,NULL,NULL,NULL,1,0,NULL),
+(6,6,'生活用品',NULL,NULL,NULL,NULL,1,0,NULL);
 
 /*Table structure for table `payment_method` */
 
