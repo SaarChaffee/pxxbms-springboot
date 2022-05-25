@@ -16,7 +16,7 @@ import java.util.Date;
 public class JwtTokenUtil {
   
   
-  public String createToken( String userName ) {
+  public static String createToken( String userName ) {
     String token = Jwts.builder()
         .setSubject( userName )
         .setExpiration( new Date( System.currentTimeMillis() + Constants.TokenExpiration ) )
@@ -25,7 +25,7 @@ public class JwtTokenUtil {
     return token;
   }
   
-  public String createToken( String userName, String role ) {
+  public static String createToken( String userName, String role ) {
     String token = Jwts.builder()
         .setSubject( userName )
         .claim( Constants.UserRoleKey, role )
