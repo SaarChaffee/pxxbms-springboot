@@ -18,7 +18,7 @@ public class ResponseUtil {
     ObjectMapper mapper = new ObjectMapper();
     PrintWriter out = null;
     response.setStatus( HttpStatus.OK.value() );
-    response.setContentType( MediaType.APPLICATION_JSON_VALUE );
+    response.setContentType( MediaType.APPLICATION_JSON_UTF8_VALUE );
     try{
       out = response.getWriter();
       mapper.writeValue( out, result );
