@@ -85,21 +85,59 @@ CREATE TABLE `good` (
   `version` bigint NOT NULL DEFAULT '1',
   `deleted` int NOT NULL DEFAULT '0',
   `childType` bigint DEFAULT NULL COMMENT '商品子类别',
+  `details` bigint DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 
 /*Data for the table `good` */
 
-insert  into `good`(`id`,`goodCode`,`parentType`,`goodName`,`inventory`,`owner`,`createdBy`,`creationDate`,`modifyBy`,`modifyDate`,`version`,`deleted`,`childType`) values 
-(1,'1',2,'脉动',500,2,0,NULL,1,'2022-05-06 19:02:26',2,0,NULL),
-(2,'2',1,'辣条',100,2,0,NULL,1,'2022-03-13 11:16:38',1,0,NULL),
-(3,'1919810',1,'红茶',114514,2,1,'2022-03-13 16:29:22',NULL,NULL,1,0,NULL),
-(6,'233',1,'临',1,4,4,'2022-03-13 17:10:44',NULL,NULL,1,0,NULL),
-(11,'13',1,'脉动',114514,2,1,'2022-03-13 22:47:50',1,'2022-05-04 15:52:01',2,0,NULL),
-(14,'19198100',1,'新鲜的',100,2,1,'2022-03-16 21:16:06',1,'2022-05-04 15:52:23',2,0,NULL),
-(18,'114515',2,'太新鲜的',1919,2,1,'2022-03-26 23:09:10',1,'2022-05-04 15:52:48',4,0,NULL),
-(19,'19',1,'新鲜的',100,1,1,'2022-03-27 00:42:01',1,'2022-05-04 15:52:12',2,0,NULL),
-(1521732820681482241,'131331',1,'1',114514,2,NULL,NULL,NULL,NULL,1,0,NULL);
+insert  into `good`(`id`,`goodCode`,`parentType`,`goodName`,`inventory`,`owner`,`createdBy`,`creationDate`,`modifyBy`,`modifyDate`,`version`,`deleted`,`childType`,`details`) values 
+(1,'1',2,'脉动',500,2,0,NULL,1,'2022-05-06 19:02:26',2,0,NULL,NULL),
+(2,'2',1,'辣条',100,2,0,NULL,1,'2022-03-13 11:16:38',1,0,NULL,NULL),
+(3,'1919810',1,'红茶',114514,2,1,'2022-03-13 16:29:22',NULL,NULL,1,0,NULL,NULL),
+(6,'233',1,'临',1,4,4,'2022-03-13 17:10:44',NULL,NULL,1,0,NULL,NULL),
+(11,'13',1,'脉动',114514,2,1,'2022-03-13 22:47:50',1,'2022-05-04 15:52:01',2,0,NULL,NULL),
+(14,'19198100',1,'新鲜的',100,2,1,'2022-03-16 21:16:06',1,'2022-05-04 15:52:23',2,0,NULL,NULL),
+(18,'114515',2,'太新鲜的',1919,2,1,'2022-03-26 23:09:10',1,'2022-05-04 15:52:48',4,0,NULL,NULL),
+(19,'19',1,'新鲜的',100,1,1,'2022-03-27 00:42:01',1,'2022-05-04 15:52:12',2,0,NULL,NULL),
+(1521732820681482241,'131331',1,'1',114514,2,NULL,NULL,NULL,NULL,1,0,NULL,NULL);
+
+/*Table structure for table `good_description` */
+
+DROP TABLE IF EXISTS `good_description`;
+
+CREATE TABLE `good_description` (
+  `id` bigint NOT NULL,
+  `description` longtext COLLATE utf8mb4_general_ci,
+  `createdBy` bigint DEFAULT NULL,
+  `creationDate` datetime DEFAULT NULL,
+  `modifyBy` bigint DEFAULT NULL,
+  `modifyDate` datetime DEFAULT NULL,
+  `version` bigint NOT NULL DEFAULT '1',
+  `deleted` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `good_description` */
+
+/*Table structure for table `good_details` */
+
+DROP TABLE IF EXISTS `good_details`;
+
+CREATE TABLE `good_details` (
+  `id` bigint NOT NULL,
+  `cover` longtext COLLATE utf8mb4_general_ci,
+  `title` varchar(60) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `createdBy` bigint DEFAULT NULL,
+  `creationDate` datetime DEFAULT NULL,
+  `modifyBy` bigint DEFAULT NULL,
+  `modifyDate` datetime DEFAULT NULL,
+  `version` bigint NOT NULL DEFAULT '1',
+  `deleted` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `good_details` */
 
 /*Table structure for table `good_type` */
 
