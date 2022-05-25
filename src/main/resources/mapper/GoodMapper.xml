@@ -18,6 +18,7 @@
     <result property="version" column="version" jdbcType="BIGINT"/>
     <result property="deleted" column="deleted" jdbcType="INTEGER"/>
     <result property="childType" column="childType" jdbcType="BIGINT"/>
+    <result property="details" column="details" jdbcType="BIGINT"/>
   </resultMap>
   
   <sql id="Base_Column_List">
@@ -25,7 +26,7 @@
     ,goodName,goodCode,
         goodType,inventory,owner,
         createdBy,creationDate,modifyBy,
-        modifyDate,version,deleted
+        modifyDate,version,deleted,details
   </sql>
   <select id="queryGoodList" resultType="com.chaffee.entity.vo.GoodVO">
     select g.*,t.typeName as goodTypeName,u.userName as ownerName

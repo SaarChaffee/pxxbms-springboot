@@ -89,6 +89,8 @@ public class Good implements Serializable {
   @TableField( value = "childType" )
   private Long childType;
   
+  @TableField( value = "details" )
+  private Long details;
   @TableField( exist = false )
   private static final long serialVersionUID = 1L;
   
@@ -125,7 +127,8 @@ public class Good implements Serializable {
         && ( this.getVersion() == null ? other.getVersion() == null : this.getVersion().equals( other.getVersion() ) )
         && ( this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals( other.getDeleted() ) )
         && ( this.getChildType() == null ? other.getChildType() == null :
-        this.getChildType().equals( other.getChildType() ) );
+        this.getChildType().equals( other.getChildType() ) )
+        && ( this.getDetails() == null ? other.getDetails() == null : this.getDetails().equals( other.getDetails() ) );
   }
   
   @Override
@@ -145,6 +148,7 @@ public class Good implements Serializable {
     result = prime * result + ( ( getVersion() == null ) ? 0 : getVersion().hashCode() );
     result = prime * result + ( ( getDeleted() == null ) ? 0 : getDeleted().hashCode() );
     result = prime * result + ( ( getChildType() == null ? 0 : getChildType().hashCode() ) );
+    result = prime * result + ( ( getDetails() == null ? 0 : getDetails().hashCode() ) );
     return result;
   }
   
@@ -168,6 +172,7 @@ public class Good implements Serializable {
     sb.append( ", deleted=" ).append( deleted );
     sb.append( ", serialVersionUID=" ).append( serialVersionUID );
     sb.append( ", childType=" ).append( childType );
+    sb.append( ", details=" ).append( details );
     sb.append( "]" );
     return sb.toString();
   }

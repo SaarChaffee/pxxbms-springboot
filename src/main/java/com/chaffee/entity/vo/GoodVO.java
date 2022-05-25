@@ -65,4 +65,8 @@ public class GoodVO implements Serializable {
    * 子类型
    */
   private Integer childType;
+  /**
+   * 商品详情
+   */
+  private Long details;
 }
