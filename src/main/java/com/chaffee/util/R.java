@@ -21,7 +21,7 @@ public class R {
   private String message;
   
   @ApiModelProperty( value = "返回数据" )
-  private Map<String, Object> datas;
+  private Map<Object, Object> datas;
   
   @ApiModelProperty( value = "返回DTO" )
   private Object data;
@@ -78,13 +78,13 @@ public class R {
   
   public R datas( String key, Object value ) {
     if( this.datas == null ){
-      this.datas = new HashMap<String, Object>();
+      this.datas = new HashMap<Object, Object>();
     }
     this.datas.put( key, value );
     return this;
   }
   
-  public R datas( Map<String, Object> map ) {
+  public R datas( Map<Object, Object> map ) {
     this.setDatas( map );
     return this;
   }
