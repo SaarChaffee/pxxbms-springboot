@@ -6,10 +6,14 @@
  */
 package com.chaffee.config;
 
+import com.chaffee.filter.TokenAuthenticationFilter;
+import com.chaffee.filter.TokenLoginFilter;
+import com.chaffee.handler.UnauthorizedEntryPoint;
 import com.chaffee.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -21,30 +25,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure( HttpSecurity http ) throws Exception {
     
-    http.authorizeRequests()
-        .antMatchers( "/", "/index.html" ).permitAll()
-        .antMatchers( "/login" ).permitAll()
-        .antMatchers( "/error" ).permitAll()
-        .antMatchers( "/user/exist" ).authenticated()
-        .antMatchers( "/*" ).authenticated()
-        .antMatchers( "/*" ).hasAnyRole( "1", "2" )
-        .antMatchers( "/user/*" ).hasRole( "1" );
-    
-    
-    http.formLogin()
-        .usernameParameter( "username" )
-        .passwordParameter( "userpasswd" )
-        .loginPage( "/" )
-        .loginProcessingUrl( "/login" )
-        .defaultSuccessUrl( "/main.html" );
-    http.rememberMe().rememberMeParameter( "remember" );
-    http.csrf().disable();
-    http.logout().logoutSuccessUrl( "/" );
+    http.exceptionHandling()
+        .authenticationEntryPoint( new UnauthorizedEntryPoint() )
+        .and()
+        .authorizeRequests()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .csrf().disable()
+        .logout().logoutSuccessUrl( "/" )
+        .and()
+        .addFilter( new TokenLoginFilter( authenticationManager() ) )
+        .addFilter( new TokenAuthenticationFilter( authenticationManager() ) );
   }
   
   @Override
   protected void configure( AuthenticationManagerBuilder auth ) throws Exception {
     auth.userDetailsService( securityService ).passwordEncoder( new PasswordEncoderConfig() );
+  }
+  
+  @Override
+  public void configure( WebSecurity web ) throws Exception {
+    web.ignoring().antMatchers( "/index**", "/api/**", "/swagger-ui/**" );
   }
   
   
