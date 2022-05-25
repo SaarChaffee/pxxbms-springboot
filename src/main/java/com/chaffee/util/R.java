@@ -45,6 +45,14 @@ public class R {
     return r;
   }
   
+  public static R unauth() {
+    R r = new R();
+    r.setSuccess( ResultCodeEnum.UNAUTHORIZED.getSuccess() );
+    r.setCode( ResultCodeEnum.UNAUTHORIZED.getCode() );
+    r.setMessage( ResultCodeEnum.UNAUTHORIZED.getMessage() );
+    return r;
+  }
+  
   public static R setResult( ResultCodeEnum resultCodeEnum ) {
     R r = new R();
     r.setSuccess( resultCodeEnum.getSuccess() );
