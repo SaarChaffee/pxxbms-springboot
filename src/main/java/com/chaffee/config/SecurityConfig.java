@@ -8,6 +8,7 @@ package com.chaffee.config;
 
 import com.chaffee.filter.TokenAuthenticationFilter;
 import com.chaffee.filter.TokenLoginFilter;
+import com.chaffee.handler.LogoutSuccessHandler;
 import com.chaffee.handler.UnauthorizedEntryPoint;
 import com.chaffee.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authenticated()
         .and()
         .csrf().disable()
-        .logout().logoutSuccessUrl( "/" )
+        .logout().logoutSuccessHandler( new LogoutSuccessHandler() )
         .and()
         .addFilter( new TokenLoginFilter( authenticationManager() ) )
         .addFilter( new TokenAuthenticationFilter( authenticationManager() ) );
