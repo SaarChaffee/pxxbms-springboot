@@ -11,12 +11,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Collections.singletonList;
 
 @Configuration
 @EnableOpenApi
@@ -32,13 +35,26 @@ public class SwaggerConfig {
         .enable( enableDocket )
         .groupName( "Chaffee" )
         .select()
-        //RequestHandlerSelectors，配置要扫描的方式
         .apis( RequestHandlerSelectors.any() )
-        //.apis( RequestHandlerSelectors.basePackage( "com.chaffee" ) )
-        //path：指定路径
-        //ant()：只扫描指定路径
-        //.paths( PathSelectors.ant( "/chaffee/**" ) )
+        .build()
+        .securityContexts( List.of( securityContext() ) )
+        .securitySchemes( List.of( new ApiKey( "token", "token", "header" ) ) );
+  }
+  
+  private SecurityContext securityContext() {
+    return SecurityContext.builder()
+        .securityReferences( defaultAuth() )
+        //.forPaths(PathSelectors.regex("/*.*"))
         .build();
+  }
+  
+  private List<SecurityReference> defaultAuth() {
+    AuthorizationScope authorizationScope
+        = new AuthorizationScope( "global", "accessEverything" );
+    AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+    authorizationScopes[0] = authorizationScope;
+    return singletonList(
+        new SecurityReference( "token", authorizationScopes ) );
   }
   
   //配置
