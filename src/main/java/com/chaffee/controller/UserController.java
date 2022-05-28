@@ -15,17 +15,15 @@ import com.chaffee.entity.pojo.UserRole;
 import com.chaffee.entity.vo.UserVO;
 import com.chaffee.service.UserRoleService;
 import com.chaffee.service.UserService;
-import com.chaffee.util.Constants;
+import com.chaffee.util.JwtTokenUtil;
 import com.chaffee.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping( "/user" )
 public class UserController {
   @Autowired
@@ -33,11 +31,23 @@ public class UserController {
   @Autowired
   UserRoleService userRoleService;
   
+  @GetMapping( "/login" )
+  public R login( @RequestParam( value = "token" ) String token ) {
+    String name = JwtTokenUtil.getUserNameFromToken( token );
+    LoginDTO loginDTO = userService.queryLogin( name );
+    return R.ok().datas( "user", loginDTO );
+  }
+  
+  @PostMapping("/logout")
+  public R logout( HttpServletResponse response ){
+    response.setHeader( "Access-Control-Allow-Origin","*" );
+    return R.ok();
+  }
+  
   @GetMapping( "/list" )
-  public String list( @RequestParam( value = "queryUserName", required = false ) String userName,
-                      @RequestParam( value = "queryUserRole", required = false ) String role,
-                      @RequestParam( value = "pageIndex", required = false ) String pageIndex,
-                      Model model ) {
+  public R list( @RequestParam( value = "queryUserName", required = false ) String userName,
+                 @RequestParam( value = "queryUserRole", required = false ) String role,
+                 @RequestParam( value = "pageIndex", required = false ) String pageIndex ) {
     userName = StringUtils.isEmpty( userName ) ? "" : userName;
     int userRole = StringUtils.isNumber( role ) && !role.contains( "-" ) ? Integer.parseInt( role ) : 0;
     int index = StringUtils.isNumber( pageIndex ) && !pageIndex.contains( "-" ) ? Integer.parseInt( pageIndex ) : 1;
@@ -45,61 +55,63 @@ public class UserController {
     Page<UserVO> page = new Page<>( index, 15 );
     List<UserVO> userList = userService.queryUserList( page, userName, userRole );
     List<UserRole> roleList = userRoleService.list();
-    model.addAttribute( "users", userList );
-    model.addAttribute( "pageParam", page );
-    model.addAttribute( "roleList", roleList );
-    model.addAttribute( "queryUserName", userName );
-    model.addAttribute( "queryUserRole", userRole );
-    return "user/list";
+    return R.ok()
+        .datas( "users", userList )
+        .datas( "pageParam", page )
+        .datas( "roleList", roleList )
+        .datas( "queryUserName", userName )
+        .datas( "queryUserRole", userRole );
   }
   
   @GetMapping( "/list/{id}" )
-  public String list( @PathVariable( "id" ) String userId, Model model ) {
+  public R list( @PathVariable( "id" ) String userId ) {
     long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
     UserVO userVO = userService.queryUser( id );
-    model.addAttribute( "user", userVO );
-    return "user/view";
+    return R.ok().datas( "user", userVO );
   }
   
   @GetMapping( "/toUpd/{id}" )
-  public String toUpd( @PathVariable( "id" ) String userId, Model model ) {
+  public R toUpd( @PathVariable( "id" ) String userId ) {
     long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
     User user = userService.getById( id );
     List<UserRole> roleList = userRoleService.list();
-    model.addAttribute( "user", user );
-    model.addAttribute( "roleList", roleList );
-    return "user/update";
+    return R.ok()
+        .datas( "user", user )
+        .datas( "roleList", roleList );
   }
   
   @PostMapping( "/upd" )
-  public String upd( User user, HttpSession session ) {
-    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
-    user.setModifyBy( login.getId() );
+  public R upd( User user, String currentId ) {
+    boolean result = false;
+    Long curId = StringUtils.isNumber( currentId ) ? Long.parseLong( currentId ) : 0L;
+    user.setModifyBy( curId );
     try{
-      userService.updateById( user );
+      result = userService.updateById( user );
     }catch( Exception e ){
       e.printStackTrace();
     }
-    return "redirect:/user/list";
+    return result ? R.ok().message( "更新成功" ) : R.error().message( "更新失败" );
   }
   
   @GetMapping( "/toAdd" )
-  public String toAdd( Model model ) {
-    model.addAttribute( "roleList", userRoleService.list() );
-    return "user/add";
+  public R toAdd() {
+    return R.ok()
+        .datas( "roleList", userRoleService.list() );
   }
   
   @PostMapping( "/add" )
-  public String add( User user, HttpSession session ) {
-    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
-    user.setCreatedBy( login.getId() );
-    user.setModifyBy( login.getId() );
+  public R add( User user, String currentId ) {
+    boolean result = false;
+    Long curId = StringUtils.isNumber( currentId ) ? Long.parseLong( currentId ) : 0L;
+    user.setModifyBy( curId );
+    user.setCreatedBy( curId );
+    
     try{
-      userService.save( user );
+      result = userService.save( user );
     }catch( Exception e ){
       e.printStackTrace();
     }
-    return "redirect:/user/list";
+    return result ? R.ok().message( "添加成功" ) : R.error().message( "添加失败" );
   }
   
   @GetMapping( "/exist" )
@@ -114,10 +126,10 @@ public class UserController {
   }
   
   @GetMapping( "/delUser/{id}" )
-  public String del( @PathVariable( "id" ) String userId ) {
+  public R del( @PathVariable( "id" ) String userId ) {
     long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
-    boolean b = userService.removeById( id );
-    return "redirect:/user/list";
+    boolean result = userService.removeById( id );
+    return result ? R.ok().message( "删除成功" ) : R.error().message( "删除失败" );
   }
   
   @GetMapping( "/get/{id}" )
@@ -130,6 +142,4 @@ public class UserController {
     }
     else return R.error();
   }
-  
-  
 }
