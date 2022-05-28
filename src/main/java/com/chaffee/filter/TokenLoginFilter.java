@@ -61,7 +61,7 @@ public class TokenLoginFilter extends UsernamePasswordAuthenticationFilter {
     String token = JwtTokenUtil.createToken( user.getUsername(), authrorities );
     HashMap<Object, Object> map = new HashMap<>();
     map.put( "token", token );
-    map.put( "user", user );
+    response.setHeader( "Access-Control-Allow-Origin","*" );
     ResponseUtil.out( response, R.ok().datas( map ) );
   }
   
