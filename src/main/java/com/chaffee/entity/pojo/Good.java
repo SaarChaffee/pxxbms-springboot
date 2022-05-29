@@ -33,8 +33,8 @@ public class Good implements Serializable {
   /**
    * 商品类别
    */
-  @TableField( value = "parentType" )
-  private Long parentType;
+  @TableField( value = "goodType" )
+  private Long goodType;
   
   /**
    * 商品库存
@@ -86,11 +86,13 @@ public class Good implements Serializable {
   @TableField( value = "deleted" )
   private Integer deleted;
   
-  @TableField( value = "childType" )
-  private Long childType;
-  
   @TableField( value = "details" )
   private Long details;
+  
+  @TableField(value = "description")
+  private Long description;
+  
+  
   @TableField( exist = false )
   private static final long serialVersionUID = 1L;
   
@@ -111,8 +113,8 @@ public class Good implements Serializable {
         this.getGoodName().equals( other.getGoodName() ) )
         && ( this.getGoodCode() == null ? other.getGoodCode() == null :
         this.getGoodCode().equals( other.getGoodCode() ) )
-        && ( this.getParentType() == null ? other.getParentType() == null :
-        this.getParentType().equals( other.getParentType() ) )
+        && ( this.getGoodType() == null ? other.getGoodType() == null :
+        this.getGoodType().equals( other.getGoodType() ) )
         && ( this.getInventory() == null ? other.getInventory() == null :
         this.getInventory().equals( other.getInventory() ) )
         && ( this.getOwner() == null ? other.getOwner() == null : this.getOwner().equals( other.getOwner() ) )
@@ -126,9 +128,8 @@ public class Good implements Serializable {
         this.getModifyDate().equals( other.getModifyDate() ) )
         && ( this.getVersion() == null ? other.getVersion() == null : this.getVersion().equals( other.getVersion() ) )
         && ( this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals( other.getDeleted() ) )
-        && ( this.getChildType() == null ? other.getChildType() == null :
-        this.getChildType().equals( other.getChildType() ) )
-        && ( this.getDetails() == null ? other.getDetails() == null : this.getDetails().equals( other.getDetails() ) );
+        && ( this.getDetails() == null ? other.getDetails() == null : this.getDetails().equals( other.getDetails() ) )
+        && ( this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals( other.getDescription() ));
   }
   
   @Override
@@ -138,7 +139,7 @@ public class Good implements Serializable {
     result = prime * result + ( ( getId() == null ) ? 0 : getId().hashCode() );
     result = prime * result + ( ( getGoodName() == null ) ? 0 : getGoodName().hashCode() );
     result = prime * result + ( ( getGoodCode() == null ) ? 0 : getGoodCode().hashCode() );
-    result = prime * result + ( ( getParentType() == null ) ? 0 : getParentType().hashCode() );
+    result = prime * result + ( ( getGoodType() == null ) ? 0 : getGoodType().hashCode() );
     result = prime * result + ( ( getInventory() == null ) ? 0 : getInventory().hashCode() );
     result = prime * result + ( ( getOwner() == null ) ? 0 : getOwner().hashCode() );
     result = prime * result + ( ( getCreatedBy() == null ) ? 0 : getCreatedBy().hashCode() );
@@ -147,8 +148,8 @@ public class Good implements Serializable {
     result = prime * result + ( ( getModifyDate() == null ) ? 0 : getModifyDate().hashCode() );
     result = prime * result + ( ( getVersion() == null ) ? 0 : getVersion().hashCode() );
     result = prime * result + ( ( getDeleted() == null ) ? 0 : getDeleted().hashCode() );
-    result = prime * result + ( ( getChildType() == null ? 0 : getChildType().hashCode() ) );
     result = prime * result + ( ( getDetails() == null ? 0 : getDetails().hashCode() ) );
+    result = prime * result + ( (getDescription() == null ? 0 : getDescription().hashCode()));
     return result;
   }
   
@@ -161,7 +162,7 @@ public class Good implements Serializable {
     sb.append( ", id=" ).append( id );
     sb.append( ", goodName=" ).append( goodName );
     sb.append( ", goodCode=" ).append( goodCode );
-    sb.append( ", parentType=" ).append( parentType );
+    sb.append( ", goodType=" ).append( goodType );
     sb.append( ", inventory=" ).append( inventory );
     sb.append( ", owner=" ).append( owner );
     sb.append( ", createdBy=" ).append( createdBy );
@@ -171,8 +172,8 @@ public class Good implements Serializable {
     sb.append( ", version=" ).append( version );
     sb.append( ", deleted=" ).append( deleted );
     sb.append( ", serialVersionUID=" ).append( serialVersionUID );
-    sb.append( ", childType=" ).append( childType );
     sb.append( ", details=" ).append( details );
+    sb.append( ", description=" ).append( description );
     sb.append( "]" );
     return sb.toString();
   }

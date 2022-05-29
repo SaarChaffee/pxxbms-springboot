@@ -28,7 +28,7 @@ public class GoodVO implements Serializable {
   /**
    * 父类型
    */
-  private Integer parentType;
+  private Integer goodType;
   /**
    * 商品库存
    */
@@ -62,11 +62,11 @@ public class GoodVO implements Serializable {
    */
   private String ownerName;
   /**
-   * 子类型
-   */
-  private Integer childType;
-  /**
    * 商品详情
    */
   private Long details;
+  /**详情
+   *
+   */
+  private Long description;
 }

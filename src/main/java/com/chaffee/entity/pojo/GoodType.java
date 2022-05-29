@@ -68,9 +68,6 @@ public class GoodType implements Serializable {
   @TableField( value = "deleted" )
   private Integer deleted;
   
-  @TableField( value = "parentId" )
-  private Long parentId;
-  
   @TableField( exist = false )
   private static final long serialVersionUID = 1L;
   
@@ -100,9 +97,7 @@ public class GoodType implements Serializable {
         && ( this.getModifyDate() == null ? other.getModifyDate() == null :
         this.getModifyDate().equals( other.getModifyDate() ) )
         && ( this.getVersion() == null ? other.getVersion() == null : this.getVersion().equals( other.getVersion() ) )
-        && ( this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals( other.getDeleted() ) )
-        && ( this.getParentId() == null ? other.getParentId() == null :
-        this.getParentId().equals( other.getParentId() ) );
+        && ( this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals( other.getDeleted() ) );
   }
   
   @Override
@@ -118,7 +113,6 @@ public class GoodType implements Serializable {
     result = prime * result + ( ( getModifyDate() == null ) ? 0 : getModifyDate().hashCode() );
     result = prime * result + ( ( getVersion() == null ) ? 0 : getVersion().hashCode() );
     result = prime * result + ( ( getDeleted() == null ) ? 0 : getDeleted().hashCode() );
-    result = prime * result + ( ( getParentId() == null ) ? 0 : getParentId().hashCode() );
     return result;
   }
   
@@ -138,7 +132,6 @@ public class GoodType implements Serializable {
     sb.append( ", version=" ).append( version );
     sb.append( ", deleted=" ).append( deleted );
     sb.append( ", serialVersionUID=" ).append( serialVersionUID );
-    sb.append( ", parentId=" ).append( parentId );
     sb.append( "]" );
     return sb.toString();
   }
