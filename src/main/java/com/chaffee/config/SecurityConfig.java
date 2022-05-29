@@ -32,6 +32,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .cors()
         .and()
         .authorizeRequests()
+        //.antMatchers( "/index**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs",
+        //              "configuration/ui", "configuration/security", "/webjars/**" )
+        //.permitAll()
         .anyRequest()
         .authenticated()
         .and()
@@ -49,7 +52,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   
   @Override
   public void configure( WebSecurity web ) throws Exception {
-    web.ignoring().antMatchers( "/index**", "/api/**", "/swagger-ui/**" )
+    web.ignoring()
+        .antMatchers( "/index**"  )
+        .antMatchers( "/swagger-ui/**" )
         .antMatchers( "/swagger-resources/**")
         .antMatchers("/v3/api-docs")
         .antMatchers("configuration/ui")
