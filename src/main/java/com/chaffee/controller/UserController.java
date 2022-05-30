@@ -124,7 +124,7 @@ public class UserController {
       return R.ok().data( user );
       
     }
-    else return R.error();
+    else return R.ok();
   }
   
   @GetMapping( "/delUser/{id}" )
