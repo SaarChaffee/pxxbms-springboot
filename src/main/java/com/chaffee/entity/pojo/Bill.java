@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  * @TableName bill
@@ -64,7 +65,7 @@ public class Bill implements Serializable {
    * 下单时间
    */
   @TableField( value = "billTime" )
-  private LocalDateTime billTime;
+  private Date billTime;
   
   /**
    * 支付方式
@@ -76,7 +77,7 @@ public class Bill implements Serializable {
    * 配送时间
    */
   @TableField( value = "deliveryTime" )
-  private LocalDateTime deliveryTime;
+  private Date deliveryTime;
   
   /**
    * 创建者

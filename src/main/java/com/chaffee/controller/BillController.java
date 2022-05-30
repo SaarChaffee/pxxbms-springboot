@@ -23,7 +23,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -75,7 +75,7 @@ public class BillController {
   public String add( Bill bill, HttpSession session ) {
     LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
     bill.setCreatedBy( login.getId() );
-    bill.setBillTime( LocalDateTime.now() );
+    bill.setBillTime( new Date(System.currentTimeMillis()) );
     try{
       billService.save( bill );
     }catch( Exception e ){

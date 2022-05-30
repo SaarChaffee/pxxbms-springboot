@@ -10,7 +10,7 @@
     <result property="userName" column="userName" jdbcType="VARCHAR"/>
     <result property="userPassword" column="userPassword" jdbcType="VARCHAR"/>
     <result property="gender" column="gender" jdbcType="INTEGER"/>
-    <result property="birthday" column="birthday" jdbcType="DATE"/>
+    <result property="birthday" column="birthday" jdbcType="TIMESTAMP"/>
     <result property="phone" column="phone" jdbcType="VARCHAR"/>
     <result property="address" column="address" jdbcType="VARCHAR"/>
     <result property="userRole" column="userRole" jdbcType="BIGINT"/>
