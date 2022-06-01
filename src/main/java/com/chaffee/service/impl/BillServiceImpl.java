@@ -5,8 +5,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chaffee.entity.dto.BillCodeDTO;
 import com.chaffee.entity.pojo.Bill;
 import com.chaffee.entity.vo.BillVO;
-import com.chaffee.service.BillService;
 import com.chaffee.mapper.BillMapper;
+import com.chaffee.service.BillGoodService;
+import com.chaffee.service.BillService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +22,23 @@ import java.util.List;
 public class BillServiceImpl extends ServiceImpl<BillMapper, Bill>
     implements BillService {
   
+  @Autowired
+  BillGoodService billGoodService;
+  
   @Override
-  public List<BillVO> queryBillList( IPage<BillVO> page, String goodName, String customerName, int paymentMethod ) {
-    return baseMapper.queryBillList( page, goodName, customerName, paymentMethod );
+  public List<BillVO> queryBillList( IPage<BillVO> page, String customerName, long paymentMethod ) {
+    List<BillVO> billVOS = baseMapper.queryBillList( page, customerName, paymentMethod );
+    billVOS.forEach( b -> {
+      b.setGoods( billGoodService.queryListByBillId( b.getId() ) );
+    } );
+    return billVOS;
   }
   
   @Override
   public BillVO queryBill( long id ) {
-    return baseMapper.queryBill( id );
+    BillVO billVO = baseMapper.queryBill( id );
+    billVO.setGoods( billGoodService.queryListByBillId( billVO.getId() ) );
+    return billVO;
   }
   
   @Override
