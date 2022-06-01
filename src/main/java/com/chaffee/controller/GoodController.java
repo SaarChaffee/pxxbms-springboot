@@ -18,14 +18,13 @@ import com.chaffee.service.GoodTypeService;
 import com.chaffee.util.Constants;
 import com.chaffee.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping( "/good" )
 public class GoodController {
   @Autowired
