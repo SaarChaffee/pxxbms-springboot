@@ -7,81 +7,108 @@
 package com.chaffee.controller;
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import com.baomidou.mybatisplus.extension.conditions.query.QueryChainWrapper;
+import com.baomidou.mybatisplus.extension.conditions.update.UpdateChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chaffee.entity.dto.BillCodeDTO;
-import com.chaffee.entity.dto.LoginDTO;
 import com.chaffee.entity.pojo.Bill;
+import com.chaffee.entity.pojo.BillGood;
 import com.chaffee.entity.pojo.PaymentMethod;
+import com.chaffee.entity.vo.BillGoodVO;
 import com.chaffee.entity.vo.BillVO;
+import com.chaffee.service.BillGoodService;
 import com.chaffee.service.BillService;
 import com.chaffee.service.PaymentMethodService;
-import com.chaffee.util.Constants;
 import com.chaffee.util.R;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping( "/bill" )
 public class BillController {
   @Autowired
   BillService billService;
   @Autowired
+  BillGoodService billGoodService;
+  @Autowired
   PaymentMethodService paymentMethodService;
   
   @GetMapping( "/list" )
-  public String list( @RequestParam( value = "queryGoodName", required = false ) String queryGoodName,
-                      @RequestParam( value = "queryCustomerName", required = false ) String queryCustomerName,
-                      @RequestParam( value = "queryPaymentMethod", required = false ) String queruPaymentMethod,
-                      @RequestParam( value = "pageIndex", required = false ) String pageIndex,
-                      Model model ) {
-    queryGoodName = !StringUtils.isEmpty( queryGoodName ) ? queryGoodName : "";
+  public R list( @RequestParam( value = "queryCustomerName", required = false ) String queryCustomerName,
+                 @RequestParam( value = "queryPaymentMethod", required = false ) String queruPaymentMethod,
+                 @RequestParam( value = "pageIndex", required = false ) String pageIndex,
+                 @RequestParam( value = "pageSize", required = false ) String pageSize ) {
     queryCustomerName = !StringUtils.isEmpty( queryCustomerName ) ? queryCustomerName : "";
-    int method = StringUtils.isNumber( queruPaymentMethod ) ? Integer.parseInt( queruPaymentMethod ) : 0;
+    long method = StringUtils.isNumber( queruPaymentMethod ) ? Long.parseLong( queruPaymentMethod ) : 0L;
     int index = StringUtils.isNumber( pageIndex ) ? Integer.parseInt( pageIndex ) : 1;
+    int size = StringUtils.isNumber( pageSize ) && !pageIndex.contains( "-" ) ? Integer.parseInt( pageSize ) : 10;
     
-    Page<BillVO> page = new Page<BillVO>( index, 15 );
-    List<BillVO> billList = billService.queryBillList( page, queryGoodName, queryCustomerName, method );
+    Page<BillVO> page = new Page<BillVO>( index, size );
+    List<BillVO> billList = billService.queryBillList( page, queryCustomerName, method );
     List<PaymentMethod> methodList = paymentMethodService.list();
-    model.addAttribute( "billList", billList );
-    model.addAttribute( "methodList", methodList );
-    model.addAttribute( "queryGoodName", queruPaymentMethod );
-    model.addAttribute( "queryCustomerName", queryCustomerName );
-    model.addAttribute( "queryPaymentMethod", method );
-    model.addAttribute( "pageParam", page );
-    return "bill/list";
+    return R.ok()
+        .datas( "billList", billList )
+        .datas( "methodList", methodList )
+        .datas( "queryGoodName", queruPaymentMethod )
+        .datas( "queryCustomerName", queryCustomerName )
+        .datas( "queryPaymentMethod", method )
+        .datas( "pageParam", page );
   }
   
-  @GetMapping("/list/{id}")
-  public String list(@PathVariable("id")String billId,Model model){
-    long id = StringUtils.isNumber( billId )? Long.parseLong(billId):0L;
+  @GetMapping( "/list/{id}" )
+  public R list( @PathVariable( "id" ) String billId ) {
+    long id = StringUtils.isNumber( billId ) ? Long.parseLong( billId ) : 0L;
     BillVO billVO = billService.queryBill( id );
-    model.addAttribute( "bill",billVO );
-    return "bill/view";
+    return R.ok().datas( "bill", billVO );
+  }
+  
+  @GetMapping( "/goods/{id}" )
+  public R goods( @PathVariable( "id" ) String billId ) {
+    long id = StringUtils.isNumber( billId ) ? Long.parseLong( billId ) : 0L;
+    List<BillGoodVO> billGoodVOS = billGoodService.queryListByBillId( id );
+    return R.ok()
+        .datas( "goods", billGoodVOS );
   }
   
   @GetMapping( "/toAdd" )
-  public String toAdd( Model model ) {
-    model.addAttribute( "methodList", paymentMethodService.list() );
-    return "bill/add";
+  public R toAdd() {
+    return R.ok().datas( "methodList", paymentMethodService.list() );
   }
   
-  @PostMapping( "/add" )
-  public String add( Bill bill, HttpSession session ) {
-    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
-    bill.setCreatedBy( login.getId() );
-    bill.setBillTime( new Date(System.currentTimeMillis()) );
+  @PostMapping( "/add/{id}" )
+  public R add( @RequestBody BillVO billVO, @PathVariable( "id" ) String currentId ) {
+    Long curId = StringUtils.isNumber( currentId ) ? Long.parseLong( currentId ) : 0L;
+    Long id = IdWorker.getId( billVO );
+    billVO.setId( id );
+    Bill bill = new Bill();
+    BeanUtils.copyProperties( billVO, bill );
+    bill.setCreatedBy( curId );
+    bill.setBillTime( new Date( System.currentTimeMillis() ) );
+    
+    List<BillGoodVO> goods = billVO.getGoods();
+    ArrayList<BillGood> billGoods = new ArrayList<>();
+    goods.forEach( g -> {
+      BillGood billGood = new BillGood();
+      BeanUtils.copyProperties( g, billGood );
+      billGood.setBillCode( id );
+      billGood.setCreatedBy( curId );
+      billGoods.add( billGood );
+    } );
+    
+    boolean result = false;
     try{
-      billService.save( bill );
+      result = billService.save( bill ) && billGoodService.saveBatch( billGoods );
     }catch( Exception e ){
       e.printStackTrace();
     }
-    return "redirect:/bill/list";
+    return result ? R.ok().message( "添加成功" ) : R.error().message( "添加失败" );
   }
   
   @GetMapping( "/exist" )
@@ -91,35 +118,72 @@ public class BillController {
     if( bill != null ){
       return R.ok().data( bill );
     }
-    else return R.error();
+    else return R.ok();
   }
   
   @GetMapping( "/toUpd/{id}" )
-  public String toUpd( @PathVariable( "id" ) String billId, Model model ) {
+  public R toUpd( @PathVariable( "id" ) String billId ) {
     long id = StringUtils.isNumber( billId ) ? Long.parseLong( billId ) : 0L;
-    Bill bill = billService.getById( id );
+    BillVO bill = billService.queryBill( id );
     List<PaymentMethod> methodList = paymentMethodService.list();
-    model.addAttribute( "bill", bill );
-    model.addAttribute( "methodList", methodList );
-    return "bill/update";
+    return R.ok()
+        .datas( "billvo", bill )
+        .datas( "methodList", methodList );
   }
   
-  @PostMapping("/upd")
-  public String upd(Bill bill,HttpSession session){
-    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
-    bill.setModifyBy( login.getId() );
+  @PostMapping( "/upd/{id}" )
+  public R upd( @RequestBody BillVO billVO, @PathVariable( "id" ) String currentId ) {
+    Long curId = StringUtils.isNumber( currentId ) ? Long.parseLong( currentId ) : 0L;
+    Bill bill = new Bill();
+    BeanUtils.copyProperties( billVO, bill );
+    bill.setModifyBy( curId );
+    
+    List<BillGoodVO> goods = billVO.getGoods();
+    ArrayList<BillGood> billGoods = new ArrayList<>();
+    goods.forEach( g -> {
+      BillGood billGood = new BillGood();
+      BeanUtils.copyProperties( g, billGood );
+      billGood.setModifyBy( curId );
+      billGood.setBillCode( bill.getId() );
+      billGoods.add( billGood );
+    } );
+    billGoods.forEach( System.out::println );
+    boolean result = false;
     try{
-      billService.updateById( bill );
+      result = billService.updateById( bill );
+      billGoods.forEach( g -> {
+        UpdateChainWrapper<BillGood> wrapper =
+            new UpdateChainWrapper<>( billGoodService.getBaseMapper() );
+        wrapper
+            .eq( "billId", g.getBillCode() )
+            .eq( "goodCode", g.getGoodCode() );
+        billGoodService.saveOrUpdate( g, wrapper );
+      } );
     }catch( Exception e ){
       e.printStackTrace();
     }
-    return "redirect:/bill/list";
+    return result ? R.ok().message( "修改成功" ) : R.error().message( "修改失败" );
   }
   
-  @GetMapping("/del/{id}")
-  public String del(@PathVariable("id")String billId){
-    long id = StringUtils.isNumber( billId )? Long.parseLong(billId):0L;
-    boolean b = billService.removeById( id );
-    return "redirect:/bill/list";
+  @GetMapping( "/del/{id}" )
+  public R del( @PathVariable( "id" ) String billId ) {
+    long id = StringUtils.isNumber( billId ) ? Long.parseLong( billId ) : 0L;
+    QueryWrapper<BillGood> wrapper = new QueryWrapper<>();
+    wrapper.eq( "billCode", id );
+    boolean result = billService.removeById( id ) && billGoodService.remove( wrapper );
+    return result ? R.ok().message( "删除成功" ) : R.error().message( "删除失败" );
+  }
+  
+  @GetMapping( "/delGoods" )
+  public R delGoods( @RequestParam( "billCode" ) String billId,
+                     @RequestParam( "goodCode" ) String goodId ) {
+    long bId = StringUtils.isNumber( billId ) ? Long.parseLong( billId ) : 0L;
+    long gId = StringUtils.isNumber( goodId ) ? Long.parseLong( goodId ) : 0L;
+    QueryChainWrapper<BillGood> wrapper = new QueryChainWrapper<>( billGoodService.getBaseMapper() );
+    wrapper
+        .eq( "billCode", bId )
+        .eq( "goodCode", gId );
+    boolean result = billGoodService.remove( wrapper );
+    return result ? R.ok().message( "删除成功" ) : R.error().message( "删除失败" );
   }
 }
