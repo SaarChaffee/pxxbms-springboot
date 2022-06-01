@@ -7,9 +7,7 @@
   <resultMap id="BaseResultMap" type="com.chaffee.entity.pojo.Bill">
     <id property="id" column="id" jdbcType="BIGINT"/>
     <result property="billCode" column="billCode" jdbcType="VARCHAR"/>
-    <result property="goodCode" column="goodCode" jdbcType="BIGINT"/>
-    <result property="quantity" column="quantity" jdbcType="BIGINT"/>
-    <result property="goodPrice" column="goodPrice" jdbcType="DOUBLE"/>
+    <result property="goodCount" column="goodCount" jdbcType="BIGINT"/>
     <result property="totalPrice" column="totalPrice" jdbcType="DOUBLE"/>
     <result property="customerCode" column="customerCode" jdbcType="BIGINT"/>
     <result property="address" column="address" jdbcType="VARCHAR"/>
@@ -22,31 +20,24 @@
     <result property="modifyDate" column="modifyDate" jdbcType="TIMESTAMP"/>
     <result property="version" column="version" jdbcType="BIGINT"/>
     <result property="deleted" column="deleted" jdbcType="INTEGER"/>
-    <result property="goodCount" column="goodCount" jdbcType="BIGINT"/>
   </resultMap>
   
   <sql id="Base_Column_List">
     id
-    ,billCode,goodCode,
-        quantity,goodPrice,totalPrice,
+    ,billCode,goodCount,totalPrice,
         customerCode,address,billTime,
         paymentMethod,deliveryTime,createdBy,
         creationDate,modifyBy,modifyDate,
-        version,deleted,goodCount
+        version,deleted
   </sql>
   <select id="queryBillList" resultType="com.chaffee.entity.vo.BillVO">
     select b.*,
     p.typeName as paymentMethodName,
-    u.userName as customerName,
-    g.goodName as goodName
-    from bill b,payment_method p,user u,good g
+    u.userName as customerName
+    from bill b,payment_method p,user u
     <where>
       b.paymentMethod = p.id
       and b.customerCode=u.id
-      and b.goodCode = g.id
-      <if test="!goodName.isEmpty()">
-        and g.goodName like CONCAT('%',#{goodName},'%')
-      </if>
       <if test="!customerName.isEmpty()">
         and u.userName like CONCAT('%',#{customerName},'%')
       </if>
@@ -59,13 +50,11 @@
   <select id="queryBill" resultType="com.chaffee.entity.vo.BillVO">
     select b.*,
     p.typeName as paymentMethodName,
-    u.userName as customerName,
-    g.goodName as goodName
-    from bill b,payment_method p,user u,good g
+    u.userName as customerName
+    from bill b,payment_method p,user u
     <where>
       b.paymentMethod = p.id
       and b.customerCode=u.id
-      and b.goodCode = g.id
       and b.id = #{id}
       and b.deleted = 0
     </where>
