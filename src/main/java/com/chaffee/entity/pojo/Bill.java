@@ -28,21 +28,9 @@ public class Bill implements Serializable {
   /**
    * 商品编号
    */
-  @TableField( value = "goodCode" )
-  private Long goodCode;
-  
-  /**
-   * 购买数量
-   */
-  @TableField( value = "quantity" )
-  private Long quantity;
-  
-  /**
-   * 商品单价
-   */
-  @TableField( value = "goodPrice" )
-  private Double goodPrice;
-  
+  @TableField( value = "goodCount" )
+  private Long goodCount;
+
   /**
    * 总价
    */
@@ -117,9 +105,6 @@ public class Bill implements Serializable {
   @TableField( value = "deleted" )
   private Integer deleted;
   
-  @TableField( value = "goodCount" )
-  private Long goodCount;
-  
   @TableField( exist = false )
   private static final long serialVersionUID = 1L;
   
@@ -138,12 +123,8 @@ public class Bill implements Serializable {
     return ( this.getId() == null ? other.getId() == null : this.getId().equals( other.getId() ) )
         && ( this.getBillCode() == null ? other.getBillCode() == null :
         this.getBillCode().equals( other.getBillCode() ) )
-        && ( this.getGoodCode() == null ? other.getGoodCode() == null :
-        this.getGoodCode().equals( other.getGoodCode() ) )
-        && ( this.getQuantity() == null ? other.getQuantity() == null :
-        this.getQuantity().equals( other.getQuantity() ) )
-        && ( this.getGoodPrice() == null ? other.getGoodPrice() == null :
-        this.getGoodPrice().equals( other.getGoodPrice() ) )
+        && ( this.getGoodCount() == null ? other.getGoodCount() == null :
+        this.getGoodCount().equals( other.getGoodCount() ) )
         && ( this.getTotalPrice() == null ? other.getTotalPrice() == null :
         this.getTotalPrice().equals( other.getTotalPrice() ) )
         && ( this.getCustomerCode() == null ? other.getCustomerCode() == null :
@@ -164,9 +145,7 @@ public class Bill implements Serializable {
         && ( this.getModifyDate() == null ? other.getModifyDate() == null :
         this.getModifyDate().equals( other.getModifyDate() ) )
         && ( this.getVersion() == null ? other.getVersion() == null : this.getVersion().equals( other.getVersion() ) )
-        && ( this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals( other.getDeleted() ) )
-        && ( this.getGoodCount() == null ? other.getGoodCount() == null :
-        this.getGoodCount().equals( other.getGoodCount() ) );
+        && ( this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals( other.getDeleted() ) );
   }
   
   @Override
@@ -175,9 +154,7 @@ public class Bill implements Serializable {
     int result = 1;
     result = prime * result + ( ( getId() == null ) ? 0 : getId().hashCode() );
     result = prime * result + ( ( getBillCode() == null ) ? 0 : getBillCode().hashCode() );
-    result = prime * result + ( ( getGoodCode() == null ) ? 0 : getGoodCode().hashCode() );
-    result = prime * result + ( ( getQuantity() == null ) ? 0 : getQuantity().hashCode() );
-    result = prime * result + ( ( getGoodPrice() == null ) ? 0 : getGoodPrice().hashCode() );
+    result = prime * result + ( ( getGoodCount() == null ) ? 0 : getGoodCount().hashCode() );
     result = prime * result + ( ( getTotalPrice() == null ) ? 0 : getTotalPrice().hashCode() );
     result = prime * result + ( ( getCustomerCode() == null ) ? 0 : getCustomerCode().hashCode() );
     result = prime * result + ( ( getAddress() == null ) ? 0 : getAddress().hashCode() );
@@ -190,7 +167,6 @@ public class Bill implements Serializable {
     result = prime * result + ( ( getModifyDate() == null ) ? 0 : getModifyDate().hashCode() );
     result = prime * result + ( ( getVersion() == null ) ? 0 : getVersion().hashCode() );
     result = prime * result + ( ( getDeleted() == null ) ? 0 : getDeleted().hashCode() );
-    result = prime * result + ( ( getGoodCount() == null ) ? 0 : getGoodCount().hashCode() );
     return result;
   }
   
@@ -202,9 +178,7 @@ public class Bill implements Serializable {
     sb.append( "Hash = " ).append( hashCode() );
     sb.append( ", id=" ).append( id );
     sb.append( ", billCode=" ).append( billCode );
-    sb.append( ", goodCode=" ).append( goodCode );
-    sb.append( ", quantity=" ).append( quantity );
-    sb.append( ", goodPrice=" ).append( goodPrice );
+    sb.append( ", goodCount=" ).append( goodCount );
     sb.append( ", totalPrice=" ).append( totalPrice );
     sb.append( ", customerCode=" ).append( customerCode );
     sb.append( ", address=" ).append( address );
@@ -218,7 +192,6 @@ public class Bill implements Serializable {
     sb.append( ", version=" ).append( version );
     sb.append( ", deleted=" ).append( deleted );
     sb.append( ", serialVersionUID=" ).append( serialVersionUID );
-    sb.append( ", goodCount=" ).append( goodCount );
     sb.append( "]" );
     return sb.toString();
   }
