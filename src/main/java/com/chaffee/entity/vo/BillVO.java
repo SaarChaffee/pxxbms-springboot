@@ -10,6 +10,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class BillVO implements Serializable {
@@ -23,17 +24,9 @@ public class BillVO implements Serializable {
    */
   private String billCode;
   /**
-   * 商品编号
+   * 商品数量
    */
-  private Integer goodCode;
-  /**
-   * 购买数量
-   */
-  private Integer quantity;
-  /**
-   * 商品单价
-   */
-  private Double goodPrice;
+  private Long goodCount;
   /**
    * 总价
    */
@@ -41,7 +34,7 @@ public class BillVO implements Serializable {
   /**
    * 顾客编号
    */
-  private Integer customerCode;
+  private Long customerCode;
   /**
    * 配送地址
    */
@@ -53,43 +46,23 @@ public class BillVO implements Serializable {
   /**
    * 支付方式
    */
-  private Integer paymentMethod;
+  private Long paymentMethod;
   /**
    * 配送时间
    */
   private Date deliveryTime;
-  /**
-   * 创建者
-   */
-  private Integer createdBy;
-  /**
-   * 创建时间
-   */
-  private Date creationDate;
-  /**
-   * 修改者
-   */
-  private Integer modifyBy;
-  /**
-   * 修改时间
-   */
-  private Date modifyDate;
-  
+
   /**
    * 顾客姓名
    */
   private String customerName;
   /**
-   * 商品名
-   */
-  private String goodName;
-  /**
    * 支付方式
    */
   private String paymentMethodName;
   /**
-   * 商品数量
+   * 订单内的商品列表
    */
-  private Long goodCount;
+  private List<BillGoodVO> goods;
   
 }
