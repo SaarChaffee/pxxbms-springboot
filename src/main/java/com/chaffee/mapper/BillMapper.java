@@ -19,9 +19,8 @@ import java.util.List;
 @Mapper
 public interface BillMapper extends BaseMapper<Bill> {
   List<BillVO> queryBillList( @Param("page")IPage<BillVO> page,
-                              @Param( "goodName" )String goodName,
                               @Param( "customerName" )String customerName,
-                              @Param( "paymentMethod" )int paymentMethod);
+                              @Param( "paymentMethod" )long paymentMethod);
   
   BillVO queryBill(@Param( "id" )long id);
   

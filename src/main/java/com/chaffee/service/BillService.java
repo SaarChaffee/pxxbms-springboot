@@ -15,9 +15,8 @@ import java.util.List;
  */
 public interface BillService extends IService<Bill> {
   List<BillVO> queryBillList( IPage<BillVO> page,
-                              String goodName,
                               String customerName,
-                              int paymentMethod );
+                              long paymentMethod );
   
   BillVO queryBill( long id );
   

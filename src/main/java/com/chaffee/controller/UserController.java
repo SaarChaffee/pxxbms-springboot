@@ -50,8 +50,7 @@ public class UserController {
                  @RequestParam( value = "pageIndex", required = false ) String pageIndex,
                  @RequestParam( value = "pageSize",required = false)String pageSize) {
     userName = StringUtils.isEmpty( userName ) ? "" : userName;
-    System.out.println(pageSize);
-    int userRole = StringUtils.isNumber( role ) && !role.contains( "-" ) ? Integer.parseInt( role ) : 0;
+    long userRole = StringUtils.isNumber( role ) && !role.contains( "-" ) ? Long.parseLong( role ) : 0L;
     int index = StringUtils.isNumber( pageIndex ) && !pageIndex.contains( "-" ) ? Integer.parseInt( pageIndex ) : 1;
     int size = StringUtils.isNumber( pageSize ) && !pageIndex.contains( "-" ) ? Integer.parseInt( pageSize ) : 10;
     Page<UserVO> page = new Page<>( index, size );

@@ -18,7 +18,7 @@ public interface UserService extends IService<User> {
   
   LoginDTO queryLogin( String userCode);
   
-  List<UserVO> queryUserList( IPage<UserVO> page, String userName, int userRole );
+  List<UserVO> queryUserList( IPage<UserVO> page, String userName, long userRole );
   
   UserVO queryUser( Long id );
   

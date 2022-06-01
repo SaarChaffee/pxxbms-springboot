@@ -38,7 +38,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
   }
   
   @Override
-  public List<UserVO> queryUserList( IPage<UserVO> page, String userName, int userRole ) {
+  public List<UserVO> queryUserList( IPage<UserVO> page, String userName, long userRole ) {
     return baseMapper.queryUserList( page, userName, userRole );
   }
   
