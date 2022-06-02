@@ -64,9 +64,9 @@ public class GoodVO implements Serializable {
   /**
    * 商品详情
    */
-  private Long details;
-  /**详情
-   *
+  private GoodDetailVO detail;
+  /**
+   *  描述
    */
-  private Long description;
+  private GoodDescriptionVO description;
 }
