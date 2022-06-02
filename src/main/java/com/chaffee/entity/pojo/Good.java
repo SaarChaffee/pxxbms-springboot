@@ -86,13 +86,6 @@ public class Good implements Serializable {
   @TableField( value = "deleted" )
   private Integer deleted;
   
-  @TableField( value = "details" )
-  private Long details;
-  
-  @TableField(value = "description")
-  private Long description;
-  
-  
   @TableField( exist = false )
   private static final long serialVersionUID = 1L;
   
@@ -127,9 +120,7 @@ public class Good implements Serializable {
         && ( this.getModifyDate() == null ? other.getModifyDate() == null :
         this.getModifyDate().equals( other.getModifyDate() ) )
         && ( this.getVersion() == null ? other.getVersion() == null : this.getVersion().equals( other.getVersion() ) )
-        && ( this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals( other.getDeleted() ) )
-        && ( this.getDetails() == null ? other.getDetails() == null : this.getDetails().equals( other.getDetails() ) )
-        && ( this.getDescription() == null ? other.getDescription() == null : this.getDescription().equals( other.getDescription() ));
+        && ( this.getDeleted() == null ? other.getDeleted() == null : this.getDeleted().equals( other.getDeleted() ) );
   }
   
   @Override
@@ -148,8 +139,6 @@ public class Good implements Serializable {
     result = prime * result + ( ( getModifyDate() == null ) ? 0 : getModifyDate().hashCode() );
     result = prime * result + ( ( getVersion() == null ) ? 0 : getVersion().hashCode() );
     result = prime * result + ( ( getDeleted() == null ) ? 0 : getDeleted().hashCode() );
-    result = prime * result + ( ( getDetails() == null ? 0 : getDetails().hashCode() ) );
-    result = prime * result + ( (getDescription() == null ? 0 : getDescription().hashCode()));
     return result;
   }
   
@@ -172,8 +161,6 @@ public class Good implements Serializable {
     sb.append( ", version=" ).append( version );
     sb.append( ", deleted=" ).append( deleted );
     sb.append( ", serialVersionUID=" ).append( serialVersionUID );
-    sb.append( ", details=" ).append( details );
-    sb.append( ", description=" ).append( description );
     sb.append( "]" );
     return sb.toString();
   }
