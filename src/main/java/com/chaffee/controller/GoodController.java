@@ -7,21 +7,23 @@
 package com.chaffee.controller;
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chaffee.entity.dto.GoodCodeDTO;
-import com.chaffee.entity.dto.LoginDTO;
 import com.chaffee.entity.pojo.Good;
+import com.chaffee.entity.pojo.GoodDescription;
+import com.chaffee.entity.pojo.GoodDetails;
 import com.chaffee.entity.pojo.GoodType;
 import com.chaffee.entity.vo.GoodVO;
+import com.chaffee.service.GoodDescriptionService;
+import com.chaffee.service.GoodDetailsService;
 import com.chaffee.service.GoodService;
 import com.chaffee.service.GoodTypeService;
-import com.chaffee.util.Constants;
 import com.chaffee.util.R;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -30,57 +32,73 @@ public class GoodController {
   @Autowired
   GoodService goodService;
   @Autowired
+  GoodDetailsService goodDetailsService;
+  @Autowired
+  GoodDescriptionService goodDescriptionService;
+  @Autowired
   GoodTypeService goodTypeService;
   
   @GetMapping( "/list" )
-  public String list( @RequestParam( value = "queryGoodName", required = false ) String queryGoodName,
-                      @RequestParam( value = "queryOwnerName", required = false ) String queryOwnerName,
-                      @RequestParam( value = "queryGoodType", required = false ) String queryGoodType,
-                      @RequestParam( value = "pageIndex", required = false ) String pageIndex,
-                      Model model ) {
+  public R list( @RequestParam( value = "queryGoodName", required = false ) String queryGoodName,
+                 @RequestParam( value = "queryOwnerName", required = false ) String queryOwnerName,
+                 @RequestParam( value = "queryGoodType", required = false ) String queryGoodType,
+                 @RequestParam( value = "pageIndex", required = false ) String pageIndex ) {
     queryGoodName = StringUtils.isEmpty( queryGoodName ) ? "" : queryGoodName;
     queryOwnerName = StringUtils.isEmpty( queryOwnerName ) ? "" : queryOwnerName;
-    int goodType = StringUtils.isNumber( queryGoodType ) && !queryGoodType.contains( "-" ) ?
-        Integer.parseInt( queryGoodType ) : 0;
+    long goodType = StringUtils.isNumber( queryGoodType ) && !queryGoodType.contains( "-" ) ?
+        Long.parseLong( queryGoodType ) : 0;
     int index = StringUtils.isNumber( pageIndex ) && !pageIndex.contains( "-" ) ? Integer.parseInt( pageIndex ) : 1;
     
     Page<GoodVO> page = new Page<>( index, 15 );
     List<GoodVO> goodList = goodService.queryGoodList( page, queryGoodName, queryOwnerName, goodType );
     List<GoodType> typeList = goodTypeService.list();
-    model.addAttribute( "queryGoodName", queryGoodName );
-    model.addAttribute( "queryOwnerName", queryOwnerName );
-    model.addAttribute( "queryGoodType", goodType );
-    model.addAttribute( "typeList", typeList );
-    model.addAttribute( "pageParam", page );
-    model.addAttribute( "goods", goodList );
-    return "good/list";
+    return R.ok()
+        .datas( "queryGoodName", queryGoodName )
+        .datas( "queryOwnerName", queryOwnerName )
+        .datas( "queryGoodType", goodType )
+        .datas( "typeList", typeList )
+        .datas( "pageParam", page )
+        .datas( "goods", goodList );
   }
   
   @GetMapping( "/list/{id}" )
-  public String list( @PathVariable( "id" ) String goodId, Model model ) {
+  public R list( @PathVariable( "id" ) String goodId ) {
     long id = StringUtils.isNumber( goodId ) ? Long.parseLong( goodId ) : 0L;
     GoodVO goodVO = goodService.queryGood( id );
-    model.addAttribute( "good", goodVO );
-    return "good/view";
+    return R.ok()
+        .datas( "good", goodVO );
   }
   
   @GetMapping( "/toAdd" )
-  public String toAdd( Model model ) {
-    model.addAttribute( "typeList", goodTypeService.list() );
-    return "good/add";
+  public R toAdd() {
+    return R.ok()
+        .datas( "typeList", goodTypeService.list() );
   }
   
-  @PostMapping( "/add" )
-  public String add( Good good, HttpSession session ) {
-    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
-    good.setCreatedBy( login.getId() );
-    good.setModifyBy( login.getId() );
+  @PostMapping( "/add/{id}" )
+  public R add( @RequestBody GoodVO goodVO, @PathVariable( "id" ) String currentId ) {
+    Long curId = StringUtils.isNumber( currentId ) ? Long.parseLong( currentId ) : 0L;
+    Long id = IdWorker.getId( goodVO );
+    Good good = new Good();
+    GoodDetails details = new GoodDetails();
+    GoodDescription description = new GoodDescription();
+    boolean result = false;
+    BeanUtils.copyProperties( goodVO, good );
+    BeanUtils.copyProperties( goodVO.getDetail(), details );
+    BeanUtils.copyProperties( goodVO.getDescription(), description );
+    good.setId( id );
+    good.setCreatedBy( curId );
+    details.setId( id );
+    details.setCreatedBy( curId );
+    description.setId( id );
+    description.setCreatedBy( curId );
     try{
-      goodService.save( good );
+      result =
+          goodService.save( good ) && goodDetailsService.save( details ) && goodDescriptionService.save( description );
     }catch( Exception e ){
       e.printStackTrace();
     }
-    return "redirect:/user/lsit";
+    return result ? R.ok().message( "添加成功" ) : R.error().message( "添加失败" );
   }
   
   @GetMapping( "/exist" )
@@ -94,42 +112,44 @@ public class GoodController {
   }
   
   @GetMapping( "/toUpd/{id}" )
-  public String toUpd( @PathVariable( "id" ) String goodId, Model model ) {
+  public R toUpd( @PathVariable( "id" ) String goodId ) {
     long id = StringUtils.isNumber( goodId ) ? Long.parseLong( goodId ) : 0L;
-    Good good = goodService.getById( id );
+    GoodVO good = goodService.queryGood( id );
     List<GoodType> typeList = goodTypeService.list();
-    model.addAttribute( "good", good );
-    model.addAttribute( "typeList", typeList );
-    return "good/update";
+    return R.ok()
+        .datas( "good", good )
+        .datas( "typeList", typeList );
   }
   
-  @PostMapping( "/upd" )
-  public String upd( Good good, HttpSession session ) {
-    LoginDTO login = ( LoginDTO ) session.getAttribute( Constants.USER_SESSION );
-    good.setModifyBy( login.getId() );
+  @PostMapping( "/upd/{id}" )
+  public R upd( @RequestBody GoodVO goodVO, @PathVariable( "id" ) String currentId ) {
+    long curId = StringUtils.isNumber( currentId ) ? Long.parseLong( currentId ) : 0L;
+    Good good = new Good();
+    GoodDetails details = new GoodDetails();
+    GoodDescription description = new GoodDescription();
+    boolean result = false;
+    BeanUtils.copyProperties( goodVO, good );
+    BeanUtils.copyProperties( goodVO.getDetail(), details );
+    BeanUtils.copyProperties( goodVO.getDescription(), description );
+    good.setModifyBy( curId );
+    details.setModifyBy( curId );
+    description.setModifyBy( curId );
     try{
-      goodService.updateById( good );
+      result = goodService.updateById( good ) &&
+          goodDetailsService.updateById( details ) &&
+          goodDescriptionService.updateById( description );
     }catch( Exception e ){
       e.printStackTrace();
     }
-    return "redirect:/good/list";
+    return result ? R.ok().message( "修改成功" ) : R.error().message( "修改失败" );
   }
   
-  @GetMapping( "/delGood/{id}" )
-  public String del( @PathVariable( "id" ) String goodId ) {
+  @GetMapping( "/del/{id}" )
+  public R del( @PathVariable( "id" ) String goodId ) {
     long id = StringUtils.isNumber( goodId ) ? Long.parseLong( goodId ) : 0L;
-    boolean b = goodService.removeById( id );
-    return "redirect:/good/list";
-  }
-  
-  @GetMapping( "/get/{id}" )
-  @ResponseBody
-  public R getGoodById( @PathVariable( "id" ) String goodId ) {
-    long id = StringUtils.isNumber( goodId ) ? Long.parseLong( goodId ) : 0L;
-    Good good = goodService.getById( id );
-    if( good != null ){
-      return R.ok().data( good );
-    }
-    else return R.error();
+    boolean result = goodService.removeById( id ) &&
+        goodDetailsService.removeById( id ) &&
+        goodDescriptionService.removeById( id );
+    return result ? R.ok().message( "删除成功" ) : R.error().message( "删除失败" );
   }
 }
