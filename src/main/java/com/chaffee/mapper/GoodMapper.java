@@ -21,7 +21,7 @@ public interface GoodMapper extends BaseMapper<Good> {
   List<GoodVO> queryGoodList( @Param ( "page" )IPage<GoodVO> page,
                               @Param( "goodName" )String goodName,
                               @Param( "ownerName" )String ownerName,
-                              @Param( "goodType" )int goodType );
+                              @Param( "goodType" )long goodType );
   
   GoodVO queryGood(@Param( "id" )long id);
   

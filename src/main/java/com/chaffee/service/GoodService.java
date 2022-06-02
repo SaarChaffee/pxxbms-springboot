@@ -14,7 +14,7 @@ import java.util.List;
  * @createDate 2022-04-30 10:31:55
  */
 public interface GoodService extends IService<Good> {
-  List<GoodVO> queryGoodList( IPage<GoodVO> page, String goodName, String ownerName, int goodType );
+  List<GoodVO> queryGoodList( IPage<GoodVO> page, String goodName, String ownerName, long goodType );
   
   GoodVO queryGood( long id );
   
