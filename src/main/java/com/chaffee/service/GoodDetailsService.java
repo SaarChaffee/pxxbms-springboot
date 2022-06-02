@@ -2,6 +2,7 @@ package com.chaffee.service;
 
 import com.chaffee.entity.pojo.GoodDetails;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.chaffee.entity.vo.GoodDetailVO;
 
 /**
 * @author RGB
@@ -10,4 +11,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface GoodDetailsService extends IService<GoodDetails> {
 
+  GoodDetailVO queryOneById(Long id);
 }
