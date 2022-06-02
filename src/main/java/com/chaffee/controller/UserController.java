@@ -132,15 +132,4 @@ public class UserController {
     boolean result = userService.removeById( id );
     return result ? R.ok().message( "删除成功" ) : R.error().message( "删除失败" );
   }
-  
-  @GetMapping( "/get/{id}" )
-  @ResponseBody
-  public R getUserById( @PathVariable( "id" ) String userId ) {
-    long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
-    User user = userService.getById( id );
-    if( user != null ){
-      return R.ok().data( user );
-    }
-    else return R.error();
-  }
 }
