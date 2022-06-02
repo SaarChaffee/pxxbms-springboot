@@ -9,7 +9,6 @@ package com.chaffee.entity.vo;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 @Data
 public class GoodVO implements Serializable {
@@ -36,23 +35,7 @@ public class GoodVO implements Serializable {
   /**
    * 商品拥有者(取自用户表)
    */
-  private Integer owner;
-  /**
-   * 创建者
-   */
-  private Integer createdBy;
-  /**
-   * 创建时间
-   */
-  private Date creationDate;
-  /**
-   * 修改者
-   */
-  private Integer modifyBy;
-  /**
-   * 修改时间
-   */
-  private Date modifyDate;
+  private Long owner;
   /**
    * 商品类型
    */
