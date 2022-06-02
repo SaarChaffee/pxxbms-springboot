@@ -64,6 +64,13 @@ spring :
       date : yyyy-MM-dd
     pathmatch :
       matching-strategy : ant_path_matcher
+  servlet :
+    multipart :
+      enabled : true
+      max-file-size : 10MB
+      file-size-threshold : 100MB
+      location : D:/temp/template
+      
 mybatis-plus :
   configuration :
     log-impl : org.apache.ibatis.logging.slf4j.Slf4jImpl
@@ -78,3 +85,8 @@ logging :
 
 swagger2 :
   enable : true
+
+file:
+  httpRootPath : http://localhost:8081
+  resourcePath : /resource
+  uploadPath: D:/temp
