@@ -23,4 +23,5 @@ public class BillGoodVO implements Serializable {
   
   private Double price;
 
+  private Long version;
 }

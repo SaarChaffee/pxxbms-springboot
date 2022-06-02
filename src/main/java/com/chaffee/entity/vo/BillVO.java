@@ -51,7 +51,10 @@ public class BillVO implements Serializable {
    * 配送时间
    */
   private Date deliveryTime;
-
+  /**乐观锁
+   *
+   */
+  private Long version;
   /**
    * 顾客姓名
    */
