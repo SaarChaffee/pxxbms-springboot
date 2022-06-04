@@ -87,6 +87,6 @@ swagger2 :
   enable : true
 
 file:
-  httpRootPath : http://localhost:8081/pxxbms
+  httpRootPath : http://192.168.123.101:8081/pxxbms
   resourcePath : /resource
   uploadPath: D:/temp
