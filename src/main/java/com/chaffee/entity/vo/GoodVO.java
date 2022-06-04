@@ -27,11 +27,11 @@ public class GoodVO implements Serializable {
   /**
    * 父类型
    */
-  private Integer goodType;
+  private Long goodType;
   /**
    * 商品库存
    */
-  private Integer inventory;
+  private Long inventory;
   /**
    * 商品拥有者(取自用户表)
    */
