@@ -9,12 +9,14 @@ package com.chaffee.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -22,6 +24,16 @@ import java.util.List;
 
 @Configuration
 public class PXXMvcConfig implements WebMvcConfigurer {
+  
+  @Value( "${file.resourcePath}" )
+  private String resourcePath;
+  @Value( "${file.uploadPath}" )
+  private String resourceFolder;
+  
+  @Override
+  public void addResourceHandlers( ResourceHandlerRegistry registry ) {
+    registry.addResourceHandler( resourcePath+"/**" ).addResourceLocations("file:"+ resourceFolder+"/" );
+  }
   
   @Override
   public void addCorsMappings( CorsRegistry registry ) {
