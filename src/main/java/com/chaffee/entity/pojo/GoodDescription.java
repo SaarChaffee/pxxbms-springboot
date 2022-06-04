@@ -1,11 +1,10 @@
 package com.chaffee.entity.pojo;
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import lombok.Data;
 
 /**
  * 
@@ -35,7 +34,7 @@ public class GoodDescription implements Serializable {
     /**
      * 
      */
-    @TableField(value = "creationDate")
+    @TableField(value = "creationDate", fill = FieldFill.INSERT )
     private LocalDateTime creationDate;
 
     /**
@@ -47,18 +46,20 @@ public class GoodDescription implements Serializable {
     /**
      * 
      */
-    @TableField(value = "modifyDate")
+    @TableField(value = "modifyDate", fill = FieldFill.INSERT_UPDATE )
     private LocalDateTime modifyDate;
 
     /**
      * 
      */
+    @Version
     @TableField(value = "version")
     private Long version;
 
     /**
      * 
      */
+    @TableLogic
     @TableField(value = "deleted")
     private Integer deleted;
 
