@@ -6,7 +6,12 @@
  */
 package com.chaffee.entity.vo;
 
-public class GoodDetailVO {
+import lombok.Data;
+
+import java.io.Serializable;
+
+@Data
+public class GoodDetailVO implements Serializable {
   private Long id;
   private String cover;
   private String title;
