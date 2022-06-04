@@ -45,6 +45,10 @@ public class GoodVO implements Serializable {
    */
   private String ownerName;
   /**
+   *  乐观锁
+   */
+  private Long version;
+  /**
    * 商品详情
    */
   private GoodDetailVO detail;
