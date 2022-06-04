@@ -42,14 +42,16 @@ public class GoodController {
   public R list( @RequestParam( value = "queryGoodName", required = false ) String queryGoodName,
                  @RequestParam( value = "queryOwnerName", required = false ) String queryOwnerName,
                  @RequestParam( value = "queryGoodType", required = false ) String queryGoodType,
-                 @RequestParam( value = "pageIndex", required = false ) String pageIndex ) {
+                 @RequestParam( value = "pageIndex", required = false ) String pageIndex,
+                 @RequestParam( value = "pageSize", required = false ) String pageSize ) {
     queryGoodName = StringUtils.isEmpty( queryGoodName ) ? "" : queryGoodName;
     queryOwnerName = StringUtils.isEmpty( queryOwnerName ) ? "" : queryOwnerName;
     long goodType = StringUtils.isNumber( queryGoodType ) && !queryGoodType.contains( "-" ) ?
         Long.parseLong( queryGoodType ) : 0;
     int index = StringUtils.isNumber( pageIndex ) && !pageIndex.contains( "-" ) ? Integer.parseInt( pageIndex ) : 1;
-    
-    Page<GoodVO> page = new Page<>( index, 15 );
+    int size = StringUtils.isNumber( pageSize ) && !pageIndex.contains( "-" ) ? Integer.parseInt( pageSize ) : 10;
+  
+    Page<GoodVO> page = new Page<>( index, size );
     List<GoodVO> goodList = goodService.queryGoodList( page, queryGoodName, queryOwnerName, goodType );
     List<GoodType> typeList = goodTypeService.list();
     return R.ok()
@@ -88,6 +90,7 @@ public class GoodController {
     BeanUtils.copyProperties( goodVO.getDescription(), description );
     good.setId( id );
     good.setCreatedBy( curId );
+    good.setOwner( curId );
     details.setId( id );
     details.setCreatedBy( curId );
     description.setId( id );
@@ -108,7 +111,7 @@ public class GoodController {
     if( good != null ){
       return R.ok().data( good );
     }
-    return R.error();
+    return R.ok();
   }
   
   @GetMapping( "/toUpd/{id}" )
