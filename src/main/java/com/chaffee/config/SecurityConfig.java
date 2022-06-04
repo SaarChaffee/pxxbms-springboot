@@ -30,6 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authenticationEntryPoint( new UnauthorizedEntryPoint() )
         .and()
         .cors()
+        //.and()
+        //.headers().contentTypeOptions().disable()
         .and()
         .authorizeRequests()
         //.antMatchers( "/index**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs",
@@ -59,7 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/v3/api-docs")
         .antMatchers("configuration/ui")
         .antMatchers("configuration/security")
-        .antMatchers("/webjars/**");;
+        .antMatchers("/webjars/**")
+        .antMatchers( "/resource/**" );
   }
   
   
