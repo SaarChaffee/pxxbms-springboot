@@ -129,7 +129,7 @@ public class UserController {
   @GetMapping( "/delUser/{id}" )
   public R del( @PathVariable( "id" ) String userId ) {
     long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
-    boolean result = userService.removeById( id );
+    boolean result = userService.remove( id );
     return result ? R.ok().message( "删除成功" ) : R.error().message( "删除失败" );
   }
 }

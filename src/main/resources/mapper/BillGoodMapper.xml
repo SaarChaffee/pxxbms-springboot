@@ -31,7 +31,6 @@
       bg.goodCode = g.id
       and bg.billCode = #{id}
       and bg.deleted = 0
-      and g.deleted = 0
     </where>
   </select>
 </mapper>

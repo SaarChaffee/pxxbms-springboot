@@ -1,18 +1,21 @@
 package com.chaffee.service.impl;
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.chaffee.entity.dto.LoginDTO;
 import com.chaffee.entity.dto.UserCodeDTO;
+import com.chaffee.entity.pojo.Good;
 import com.chaffee.entity.pojo.User;
 import com.chaffee.entity.vo.UserVO;
 import com.chaffee.mapper.UserMapper;
+import com.chaffee.service.BillService;
+import com.chaffee.service.GoodService;
 import com.chaffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -24,7 +27,10 @@ import java.util.List;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     implements UserService {
   @Autowired
-  HttpSession session;
+  BillService billService;
+  @Autowired
+  GoodService goodService;
+  
   @Override
   public LoginDTO queryLogin( String userCode ) {
     LoginDTO login = null;
@@ -52,7 +58,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     return baseMapper.queryUserByCode( userCode );
   }
   
-
+  @Override
+  public boolean remove( Long id ) {
+    QueryWrapper<Good> goodWrapper = new QueryWrapper<>();
+    goodWrapper.eq( "owner",id );
+    long count = goodService.count( goodWrapper );
+    boolean result = false;
+    if( count==0 ){
+      result = this.removeById( id );
+    }
+    return result;
+  }
+  
+  
 }
 
 

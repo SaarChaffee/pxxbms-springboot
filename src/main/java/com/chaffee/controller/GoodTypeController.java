@@ -87,8 +87,7 @@ public class GoodTypeController {
   @GetMapping("/del/{id}")
   public R del(@PathVariable("id")String typeId){
     long id = StringUtils.isNumber( typeId ) ? Long.parseLong( typeId ) : 0L;
-    boolean result = goodTypeService.removeById( id );
+    boolean result = goodTypeService.remove( id );
     return result ? R.ok().message( "删除成功" ) : R.error().message( "删除失败" );
   }
-  
 }
