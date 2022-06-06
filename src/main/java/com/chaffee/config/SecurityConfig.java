@@ -61,8 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .antMatchers("/v3/api-docs")
         .antMatchers("configuration/ui")
         .antMatchers("configuration/security")
-        .antMatchers("/webjars/**")
-        .antMatchers( "/resource/**" );
+        .antMatchers("/webjars/**");
   }
   
   
