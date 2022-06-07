@@ -19,4 +19,6 @@ public class LoginDTO implements Serializable {
   private String userPassword;
   
   private Integer userRole;
+  
+  private String avatar;
 }
