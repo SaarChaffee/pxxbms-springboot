@@ -18,10 +18,12 @@ import com.chaffee.service.UserService;
 import com.chaffee.util.JwtTokenUtil;
 import com.chaffee.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping( "/user" )
@@ -104,11 +106,16 @@ public class UserController {
   
   @PostMapping( "/add" )
   public R add( User user, String currentId ) {
+    long id = IdWorker.getId(user);
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    UserAvatar userAvatar = new UserAvatar();
     boolean result = false;
     Long curId = StringUtils.isNumber( currentId ) ? Long.parseLong( currentId ) : 0L;
     user.setModifyBy( curId );
     user.setCreatedBy( curId );
-    
+    user.setUserPassword( encoder.encode( user.getUserPassword() ) );
+    userAvatar.setId( id );
+    userAvatar.setCreatedBy( curId );
     try{
       result = userService.save( user );
     }catch( Exception e ){
