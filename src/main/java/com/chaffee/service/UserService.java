@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.chaffee.entity.dto.LoginDTO;
 import com.chaffee.entity.dto.UserCodeDTO;
 import com.chaffee.entity.pojo.User;
+import com.chaffee.entity.vo.ProfileVO;
 import com.chaffee.entity.vo.UserVO;
 
 import java.util.List;
@@ -25,4 +26,10 @@ public interface UserService extends IService<User> {
   UserCodeDTO queryUserByCode( String userCode );
   
   boolean remove(Long id);
+  
+  ProfileVO getProfile(Long id);
+  
+  boolean judgePasswd(String passwd, Long id);
+  
+  boolean updatePasswd(String passwd, Long id);
 }

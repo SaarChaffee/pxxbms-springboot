@@ -7,18 +7,21 @@
 package com.chaffee.controller;
 
 import com.alibaba.druid.util.StringUtils;
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chaffee.entity.dto.LoginDTO;
 import com.chaffee.entity.dto.UserCodeDTO;
 import com.chaffee.entity.pojo.User;
 import com.chaffee.entity.pojo.UserAvatar;
 import com.chaffee.entity.pojo.UserRole;
+import com.chaffee.entity.vo.ProfileVO;
 import com.chaffee.entity.vo.UserVO;
 import com.chaffee.service.UserAvatarService;
 import com.chaffee.service.UserRoleService;
 import com.chaffee.service.UserService;
 import com.chaffee.util.JwtTokenUtil;
 import com.chaffee.util.R;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -144,5 +147,36 @@ public class UserController {
     long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
     boolean result = userService.remove( id );
     return result ? R.ok().message( "删除成功" ) : R.error().message( "删除失败" );
+  }
+  
+  @GetMapping("/profile/{id}")
+  public R getProfile(@PathVariable("id")String userId){
+    long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
+    ProfileVO profile = userService.getProfile( id );
+    return R.ok().datas( "user",profile );
+  }
+  
+  @PostMapping("/profile/judge")
+  public R judgePassword( @RequestBody Map<String, String> map){
+    String userId = map.get( "userId" );
+    long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
+    boolean b = userService.judgePasswd( map.get( "oldPassword" ), id );
+    if( b ){
+      return R.ok();
+    }else {
+      return R.error().message( "密码错误" );
+    }
+  }
+  
+  @PostMapping("/profile/updatePasswd")
+  public R updatePasswd(@RequestBody Map<String, String> map){
+    String userId = map.get( "userId" );
+    long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
+    boolean b = userService.updatePasswd( map.get( "newPassword" ), id );
+    if( b ){
+      return R.ok();
+    }else {
+      return R.error().message( "修改密码失败" );
+    }
   }
 }

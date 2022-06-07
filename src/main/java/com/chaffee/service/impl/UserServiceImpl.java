@@ -17,6 +17,7 @@ import com.chaffee.service.BillService;
 import com.chaffee.service.GoodService;
 import com.chaffee.service.UserAvatarService;
 import com.chaffee.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -78,7 +79,33 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     return result;
   }
   
+  @Override
+  public ProfileVO getProfile( Long id ) {
+    UserVO userVO = baseMapper.queryUser( id );
+    ProfileVO profileVO = new ProfileVO();
+    BeanUtils.copyProperties( userVO,profileVO );
+    UserAvatar avatar = userAvatarService.getById( id );
+    UserAvatarVO avatarVO = new UserAvatarVO();
+    BeanUtils.copyProperties( avatar,avatarVO );
+    profileVO.setAvatar( avatarVO );
+    return profileVO;
+  }
   
+  @Override
+  public boolean judgePasswd(String passwd,Long id){
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    User user = baseMapper.selectById( id );
+    return encoder.matches( passwd,user.getUserPassword() );
+  }
+  
+  @Override
+  public boolean updatePasswd( String passwd, Long id ) {
+    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    User user = baseMapper.selectById( id );
+    String newPasswd = encoder.encode( passwd );
+    user.setUserPassword( newPasswd );
+    return this.updateById( user );
+  }
 }
 
 
