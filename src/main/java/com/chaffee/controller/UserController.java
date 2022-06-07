@@ -162,9 +162,9 @@ public class UserController {
     long id = StringUtils.isNumber( userId ) ? Long.parseLong( userId ) : 0L;
     boolean b = userService.judgePasswd( map.get( "oldPassword" ), id );
     if( b ){
-      return R.ok();
+      return R.ok().data( "success" );
     }else {
-      return R.error().message( "密码错误" );
+      return R.ok();
     }
   }
   
