@@ -82,9 +82,11 @@ public class UserController {
   }
   
   @PostMapping( "/upd" )
-  public R upd( User user, String currentId ) {
+  public R upd( UserVO userVO, String currentId ) {
     boolean result = false;
     Long curId = StringUtils.isNumber( currentId ) ? Long.parseLong( currentId ) : 0L;
+    User user = new User();
+    BeanUtils.copyProperties( userVO,user );
     user.setModifyBy( curId );
     try{
       result = userService.updateById( user );

@@ -51,22 +51,6 @@ public class UserVO implements Serializable {
    */
   private Integer userRole;
   /**
-   * 创建者（userId）
-   */
-  private Integer createdBy;
-  /**
-   * 创建时间
-   */
-  private Date creationDate;
-  /**
-   * 更新者（userId）
-   */
-  private Integer modifyBy;
-  /**
-   * 更新时间
-   */
-  private Date modifyDate;
-  /**
    * 角色名
    */
   private String userRoleName;
@@ -74,6 +58,8 @@ public class UserVO implements Serializable {
    * 年龄
    */
   private int age;
+  
+  private Long version;
   
   public void setBirthday( Date birthday ) {
     this.birthday = birthday;
