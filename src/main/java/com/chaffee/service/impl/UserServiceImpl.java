@@ -18,6 +18,7 @@ import com.chaffee.service.GoodService;
 import com.chaffee.service.UserAvatarService;
 import com.chaffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
