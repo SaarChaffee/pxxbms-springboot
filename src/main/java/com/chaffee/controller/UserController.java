@@ -11,8 +11,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.chaffee.entity.dto.LoginDTO;
 import com.chaffee.entity.dto.UserCodeDTO;
 import com.chaffee.entity.pojo.User;
+import com.chaffee.entity.pojo.UserAvatar;
 import com.chaffee.entity.pojo.UserRole;
 import com.chaffee.entity.vo.UserVO;
+import com.chaffee.service.UserAvatarService;
 import com.chaffee.service.UserRoleService;
 import com.chaffee.service.UserService;
 import com.chaffee.util.JwtTokenUtil;
@@ -32,7 +34,8 @@ public class UserController {
   UserService userService;
   @Autowired
   UserRoleService userRoleService;
-  
+  @Autowired
+  UserAvatarService userAvatarService;
   @GetMapping( "/login" )
   public R login( @RequestParam( value = "token" ) String token ) {
     String name = JwtTokenUtil.getUserNameFromToken( token );
@@ -111,13 +114,14 @@ public class UserController {
     UserAvatar userAvatar = new UserAvatar();
     boolean result = false;
     Long curId = StringUtils.isNumber( currentId ) ? Long.parseLong( currentId ) : 0L;
+    user.setId( id );
     user.setModifyBy( curId );
     user.setCreatedBy( curId );
     user.setUserPassword( encoder.encode( user.getUserPassword() ) );
     userAvatar.setId( id );
     userAvatar.setCreatedBy( curId );
     try{
-      result = userService.save( user );
+      result = userService.save( user ) && userAvatarService.save( userAvatar );
     }catch( Exception e ){
       e.printStackTrace();
     }

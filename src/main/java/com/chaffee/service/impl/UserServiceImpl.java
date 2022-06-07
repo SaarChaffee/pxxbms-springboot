@@ -8,10 +8,14 @@ import com.chaffee.entity.dto.LoginDTO;
 import com.chaffee.entity.dto.UserCodeDTO;
 import com.chaffee.entity.pojo.Good;
 import com.chaffee.entity.pojo.User;
+import com.chaffee.entity.pojo.UserAvatar;
+import com.chaffee.entity.vo.ProfileVO;
+import com.chaffee.entity.vo.UserAvatarVO;
 import com.chaffee.entity.vo.UserVO;
 import com.chaffee.mapper.UserMapper;
 import com.chaffee.service.BillService;
 import com.chaffee.service.GoodService;
+import com.chaffee.service.UserAvatarService;
 import com.chaffee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,12 +35,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
   @Autowired
   GoodService goodService;
   
+  @Autowired
+  UserAvatarService userAvatarService;
   @Override
   public LoginDTO queryLogin( String userCode ) {
     LoginDTO login = null;
     if( !StringUtils.isEmpty( userCode ) ){
       login = baseMapper.queryLogin( userCode );
       if( login != null ){
+        login.setAvatar( userAvatarService.getById( login.getId() ).getAvatar() );
         return login;
       }
     }
